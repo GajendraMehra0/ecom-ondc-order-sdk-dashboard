@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Check ETA Breach</title>
+</head>
+<body>
+  <h1>Check ETA Breach</h1>
+
+  <form action="/eta-check" method="POST">
+    <label>Created At (ISO datetime):</label>
+    <input type="datetime-local" name="createdAt" required><br><br>
+
+    <label>Domain:</label>
+    <select name="domain" required>
+      <option value="ONDC:RET10">ONDC:RET10</option>
+      <option value="ONDC:RET11">ONDC:RET11</option>
+    </select><br><br>
+
+    <label>TAT Duration (e.g., PT1H30M):</label>
+    <input type="text" name="tat" placeholder="PT1H30M" required><br><br>
+
+    <label>Fulfillment State Code:</label>
+    <select name="stateCode" required>
+      <optgroup label="Exclude Buffer State">
+        <option value="Pending">Pending</option>
+        <option value="Packed">Packed</option>
+        <option value="Agent-assigned">Agent-assigned</option>
+        <option value="Out-for-pickup">Out-for-pickup</option>
+        <option value="Pickup-failed">Pickup-failed</option>
+      </optgroup>
+      <optgroup label="Include Buffer State">
+        <option value="Order-picked-up">Order-picked-up</option>
+        <option value="In-transit">In-transit</option>
+        <option value="At-destination-hub">At-destination-hub</option>
+        <option value="Out-for-delivery">Out-for-delivery</option>
+        <option value="Delivery-failed">Delivery-failed</option>
+      </optgroup>
+    </select><br><br>
+
+    <button type="submit">Check ETA</button>
+  </form>
+
+  <% if (typeof result !== 'undefined') { %>
+    <h2>Result: <%= result === true ? "✅ ETA Breached" : result === false ? "❌ ETA Not Breached" : "❗ " + result %></h2>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Check if Order is Cancellable</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 300px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+      resize: vertical;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      textarea {
+        height: 250px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Check if Order is Cancellable</h1>
+  
+  <p>Paste your JSON payload below:</p>
+  <textarea id="jsonInput">
+{
+  "fulfillments": [
+    {
+      "type": "Delivery",
+      "state": {
+        "descriptor": {
+          "code": "Order-placed"
+        }
+      }
+    }
+  ],
+  "confirmedItems": [
+    {
+      "product": {
+        "@ondc/org/cancellable": false
+      }
+    },
+    {
+      "product": {
+        "@ondc/org/cancellable": true
+      }
+    }
+  ]
+}
+  </textarea>
+
+  <button onclick="checkCancellable()">Check</button>
+
+  <div id="result"></div>
+
+  <script>
+    const notCancellableState = ["Order-delivered", "Order-picked-up"];
+
+    const isCancellable = (data) => {
+      if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return false;
+      }
+
+      if (!data.confirmedItems || !Array.isArray(data.confirmedItems)) {
+        return false;
+      }
+
+      if (data.confirmedItems.length === 0) {
+        return false;
+      }
+
+      const deliveryFulfillment = data?.fulfillments?.find(
+        (fulfillment) => fulfillment?.type === "Delivery"
+      );
+      if (notCancellableState.includes(deliveryFulfillment?.state?.descriptor?.code)) {
+        return false;
+      }
+
+      return data.confirmedItems.every((item) => {
+        if (!item || typeof item !== "object" || Array.isArray(item)) {
+          return false;
+        }
+
+        if (
+          !item.product ||
+          typeof item.product !== "object" ||
+          Array.isArray(item.product)
+        ) {
+          return false;
+        }
+
+        return item.product["@ondc/org/cancellable"] === true;
+      });
+    };
+
+    function checkCancellable() {
+      const input = document.getElementById("jsonInput").value;
+      let data;
+
+      try {
+        data = JSON.parse(input);
+      } catch (err) {
+        document.getElementById("result").innerText = "❌ Invalid JSON format.";
+        return;
+      }
+
+      const result = isCancellable(data);
+      document.getElementById("result").innerText = result
+        ? "✅ The order is cancellable"
+        : "❌ The order is NOT cancellable";
+    }
+  </script>
+</body>
+</html>

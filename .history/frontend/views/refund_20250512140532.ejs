@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Refund Calculation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f5f7fa;
+      color: #1a1a1a;
+    }
+
+    h1 {
+      text-align: left;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #1a1a1a;
+    }
+
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 8px 12px;
+      margin-top: 6px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      background-color: #ffffff;
+      transition: border-color 0.2s ease;
+      box-sizing: border-box;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 8px top 50%;
+      background-size: 12px auto;
+    }
+
+    select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-right: 12px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 40px;
+      height: 20px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.4s;
+      border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #3b82f6;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button[type="reset"] {
+      background-color: #e5e7eb;
+      color: #374151;
+    }
+
+    button[type="reset"]:hover {
+      background-color: #d1d5db;
+    }
+
+    button[type="submit"] {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #2563eb;
+    }
+
+    .result {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 16px;
+      background-color: #ecfdf5;
+      border: 1px solid #d1fae5;
+      border-radius: 6px;
+      color: #065f46;
+    }
+
+    .result h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .error {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 16px;
+      background-color: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 6px;
+      color: #991b1b;
+    }
+
+    .error h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <h1>Check Your Refund Amount</h1>
+  <form action="/refund" method="POST">
+    <label>Actor *
+      <select name="actor" required>
+        <option value="">Select...</option>
+        <option value="Buyer">Buyer</option>
+        <option value="Seller">Seller</option>
+      </select>
+    </label>
+
+    <label>Action Type *
+      <select name="actionType" required>
+        <option value="">Select...</option>
+        <option value="full">Full</option>
+        <option value="partial">Partial</option>
+      </select>
+    </label>
+
+    <label>Action *
+      <select name="action" required>
+        <option value="">Select...</option>
+        <option value="return">Return</option>
+        <option value="cancellation">Cancellation</option>
+      </select>
+    </label>
+
+    <label>Is ETA Breached *
+      <div class="toggle-container">
+        <span class="toggle-label">False</span>
+        <label class="toggle-switch">
+          <input type="checkbox" name="isETABreached" value="true">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label">True</span>
+      </div>
+    </label>
+
+    <label>Charge Payload (JSON) *
+      <textarea name="charge" rows="6" required></textarea>
+    </label>
+
+    <label>on_cancelPayload (JSON) *
+      <textarea name="on_cancelPayload" rows="6" required></textarea>
+    </label>
+
+    <div class="button-container">
+      <button type="reset">Reset</button>
+      <button type="submit">Calculate Refund</button>
+    </div>
+  </form>
+
+  <% if (typeof refundResult !== 'undefined') { %>
+    <div class="result">
+      <h2>Refund Amount: ₹<%= refundResult %></h2>
+    </div>
+  <% } %>
+
+  <% if (typeof error !== 'undefined') { %>
+    <div class="error">
+      <h3>Error: <%= error %></h3>
+    </div>
+  <% } %>
+</body>
+</html>

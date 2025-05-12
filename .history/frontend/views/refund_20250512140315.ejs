@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Refund Calculation</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 40px;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #1a1a1a;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+
+    form {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0e0e0;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      background-color: #ffffff;
+      transition: border-color 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    select:focus, textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 30px;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 12px;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .button-container button[type="reset"] {
+      background-color: #e5e7eb;
+      color: #374151;
+    }
+
+    .button-container button[type="reset"]:hover {
+      background-color: #d1d5db;
+    }
+
+    .result {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #ecfdf5;
+      border: 1px solid #d1fae5;
+      border-radius: 6px;
+      color: #065f46;
+    }
+
+    .result h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .error {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #fef2f2;
+      border: 1px solid #fee2e2;
+      border-radius: 6px;
+      color: #991b1b;
+    }
+
+    .error h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <h1>Check your refund Amount</h1>
+  <form action="/refund" method="POST">
+    <label>Actor: *
+      <select name="actor" required>
+        <option value="">Select...</option>
+        <option value="Buyer">Buyer</option>
+        <option value="Seller">Seller</option>
+      </select>
+    </label>
+
+    <label>Action Type: *
+      <select name="actionType" required>
+        <option value="">Select...</option>
+        <option value="full">Full</option>
+        <option value="partial">Partial</option>
+      </select>
+    </label>
+
+    <label>Action: *
+      <select name="action" required>
+        <option value="">Select...</option>
+        <option value="return">Return</option>
+        <option value="cancellation">Cancellation</option>
+      </select>
+    </label>
+
+    <label>Is ETA Breached: *
+      <select name="isETABreached" required>
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+    </label>
+
+    <label>Charge Payload (JSON): *
+      <textarea name="charge" rows="10" required></textarea>
+    </label>
+
+    <label>on_cancelPayload (JSON): *
+      <textarea name="on_cancelPayload" rows="10" required></textarea>
+    </label>
+
+    <div class="button-container">
+      <button type="reset">Reset</button>
+      <button type="submit">Calculate Refund</button>
+    </div>
+  </form>
+
+  <% if (typeof refundResult !== 'undefined') { %>
+    <div class="result">
+      <h2>Refund Amount: ₹<%= refundResult %></h2>
+    </div>
+  <% } %>
+
+  <% if (typeof error !== 'undefined') { %>
+    <div class="error">
+      <h3>Error: <%= error %></h3>
+    </div>
+  <% } %>
+</body>
+</html>

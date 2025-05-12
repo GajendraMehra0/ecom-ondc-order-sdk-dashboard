@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check If Cancellable</title>
+</head>
+<body>
+  <h1>Order Cancellability Check</h1>
+  
+  <form action="/isCancellable" method="POST">
+    <label for="payload">Enter Payload (JSON format):</label><br>
+    <textarea name="payload" id="payload" rows="10" cols="50"></textarea><br><br>
+    <button type="submit">Check</button>
+  </form>
+
+  <% if (typeof result !== 'undefined' && result !== null) { %>
+    <h2>Result:</h2>
+    <p><%= result ? "The order is cancellable." : "The order is not cancellable." %></p>
+  <% } else if (result === null) { %>
+    <p>No result available. Please check the input or the payload format.</p>
+  <% } %>
+
+  <% if (result && result.includes("Error:")) { %>
+    <h3>Error:</h3>
+    <p><%= result %></p>
+  <% } %>
+
+</body>
+</html>

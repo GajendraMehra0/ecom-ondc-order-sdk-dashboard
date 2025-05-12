@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Refund Calculation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #e6ffe6;
+      border: 1px solid #b2ffb2;
+      border-radius: 5px;
+    }
+
+    .error {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffe6e6;
+      border: 1px solid #ffb2b2;
+      border-radius: 5px;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Refund Calculator</h1>
+  <form action="/refund" method="POST">
+    <label>Actor:
+      <select name="actor" required>
+        <option value="">-- Select Actor --</option>
+        <option value="Buyer">Buyer</option>
+        <option value="Seller">Seller</option>
+      </select>
+    </label>
+
+    <label>Action Type:
+      <select name="actionType" required>
+        <option value="">-- Select Action Type --</option>
+        <option value="full">Full</option>
+        <option value="partial">Partial</option>
+      </select>
+    </label>
+
+    <label>Action:
+      <select name="action" required>
+        <option value="">-- Select Action --</option>
+        <option value="return">Return</option>
+        <option value="cancellation">Cancellation</option>
+      </select>
+    </label>
+
+    <label>Is ETA Breached:
+      <select name="isETABreached" required>
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+    </label>
+
+    <label>Charge Payload (JSON):
+      <textarea name="charge" rows="10" required></textarea>
+    </label>
+
+    <label>on_cancelPayload (JSON):
+      <textarea name="on_cancelPayload" rows="10" required></textarea>
+    </label>
+
+    <button type="submit">Calculate Refund</button>
+  </form>
+
+  <% if (typeof refundResult !== 'undefined') { %>
+    <div class="result">
+      <h2>Refund Amount: ₹<%= refundResult %></h2>
+    </div>
+  <% } %>
+
+  <% if (typeof error !== 'undefined') { %>
+    <div class="error">
+      <h3>Error: <%= error %></h3>
+    </div>
+  <% } %>
+</body>
+</html>

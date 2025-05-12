@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Check if Order is Cancellable</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    textarea { width: 100%; height: 300px; margin-top: 10px; font-family: monospace; }
+    button { margin-top: 15px; padding: 10px 20px; }
+    #result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Check if Order is Cancellable</h1>
+  
+  <p>Paste your JSON payload below:</p>
+  <textarea id="jsonInput">
+{
+  "fulfillments": [
+    {
+      "type": "Delivery",
+      "state": {
+        "descriptor": {
+          "code": "Order-placed"
+        }
+      }
+    }
+  ],
+  "confirmedItems": [
+    {
+      "product": {
+        "@ondc/org/cancellable": true
+      }
+    },
+    {
+      "product": {
+        "@ondc/org/cancellable": true
+      }
+    }
+  ]
+}
+  </textarea>
+
+  <button onclick="checkCancellable()">Check</button>
+
+  <div id="result"></div>
+
+  <script>
+    const notCancellableState = ["Order-delivered", "Order-picked-up"];
+
+    const isCancellable = (data) => {
+      if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return false;
+      }
+
+      if (!data.confirmedItems || !Array.isArray(data.confirmedItems)) {
+        return false;
+      }
+
+      if (data.confirmedItems.length === 0) {
+        return false;
+      }
+
+      const deliveryFulfillment = data?.fulfillments?.find(
+        (fulfillment) => fulfillment?.type === "Delivery"
+      );
+      if (notCancellableState.includes(deliveryFulfillment?.state?.descriptor?.code)) {
+        return false;
+      }
+
+      return data.confirmedItems.every((item) => {
+        if (!item || typeof item !== "object" || Array.isArray(item)) {
+          return false;
+        }
+
+        if (
+          !item.product ||
+          typeof item.product !== "object" ||
+          Array.isArray(item.product)
+        ) {
+          return false;
+        }
+
+        return item.product["@ondc/org/cancellable"] === true;
+      });
+    };
+
+    function checkCancellable() {
+      const input = document.getElementById("jsonInput").value;
+      let data;
+
+      try {
+        data = JSON.parse(input);
+      } catch (err) {
+        document.getElementById("result").innerText = "❌ Invalid JSON format.";
+        return;
+      }
+
+      const result = isCancellable(data);
+      console.log("🚀 ~ checkCancellable ~ result:", result)
+      document.getElementById("result").innerText = result
+        ? "✅ The order is cancellable"
+        : "❌ The order is NOT cancellable";
+    }
+  </script>
+</body>
+</html>
