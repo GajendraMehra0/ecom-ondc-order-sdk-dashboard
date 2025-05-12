@@ -1,24 +1,17 @@
 {
-  "name": "ecom-ondc-order-sdk",
+  "name": "ecom-ondc-order-sdk-desktop",
   "version": "1.0.0",
-  "description": "A lightweight SDK for ONDC order logic like ETA breach, cancelability, and refund calculation.",
+  "description": "",
   "main": "src/index.js",
   "type": "module",
-  "scripts": {
-    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest"
-  },
-  "keywords": [
-    "ondc",
-    "ecommerce",
-    "order",
-    "sdk"
-  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^29.7.0",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "ecom-ondc-order-sdk": "github:gajendrawits/ecom-ondc-order-sdk"
   }
 }

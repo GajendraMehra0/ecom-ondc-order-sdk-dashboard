@@ -3,7 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Check if Order is Cancellable</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
+    .navbar {
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: -10px;
+    }
+    .brand-logo {
+        height: 60px;
+        /* width: auto;
+        max-width: 50%; */
+        object-fit: contain;
+      }
+
+    .navbar-brand {
+      color: #0056b3 !important;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+
+    .navbar-nav .nav-link {
+      color: #0056b3 !important;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 8px 15px;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #ffffff !important;
+      background-color: #007bff;
+      border-radius: 5px;
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -14,6 +47,7 @@
       color: #333;
       margin: 0;
       padding: 40px 20px;
+      padding-top: 100px; /* Adjusted for fixed navbar */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -73,10 +107,51 @@
       button {
         width: 100%;
       }
+
+      .navbar-nav .nav-link {
+        padding: 10px;
+      }
     }
   </style>
 </head>
 <body>
+  <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img
+          src="https://ondc.org/assets/ondc-buyer-apps/images/digihaat.png"
+          class="brand-logo"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse justify-content-end"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/isCancellable">Cancel Request</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/refund">Refund Request</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/eta-check">ETA-Breached</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <h1>Check if Order is Cancellable</h1>
   
   <p>Paste your JSON payload below:</p>
@@ -93,7 +168,7 @@
         "descriptor": {
           "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/https://storage.googleapis.com/witslab-seller-preprod/logo?GoogleAccessId=ondc-initiative-sa%40ondc-initiative.iam.gserviceaccount.com&Expires=2104099221&Signature=Scz8H9aKGN1dTGEcJf2eT7zda%2Bm3DO68ufqs%2FnJWDonouOTnMA6k1gYzQZkoaa3XhGfM0RkrGREijts1UTajHyjQLyvBhWwLJnQCbahwkbNBwhU%2B%2Bp3V6t54NUJR4qCZzwyqVZazoROenSNZqch7XGaa6ZTTxpy3SyxBAH1xkuLVQGYvpiYY5K3Cyw4wxelN7ilkhTMbJWcQ63CXGhXfDE4iIpIB@ondc/org/TATgIjz5ZGcpQxMo9HbteZbdSTjurrnfCo1fPGLn1%2Bfm4kShovbRp1pTYjdLAe4Jd1jSh5kTF%2BIp898lzQyIQQTsrn5ycyNko5M2ER%2BYapo5TP4NnPCnlErJ5bfaA%3D%3D",
           "images": [
-            "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/https://storage.googleapis.com/witslab-seller-preprod/logo?GoogleAccessId=ondc-initiative-sa%40ondc-initiative.iam.gserviceaccount.com&Expires=2104099221&Signature=Scz8H9aKGN1dTGEcJf2eT7zda%2Bm3DO68ufqs%2FnJWDonouOTnMA6k1gYzQZkoaa3XhGfM0RkrGREijts1UTajHyjQLyvBhWwLJnQCbahwkbNBwhU%2B%2Bp3V6t54NUJR4qCZzwyqVZazoROenSNZqch7XGaa6ZTTxpy3SyxBAH1xkuLVQGYvpiYY5K3Cyw4wxelN7ilkhTMbJWcQ63CXGhXfDE4iIpIBgIjz5ZGcpQxMo9HbteZbdSTjurrnfCo1fPGLn1%2Bfm4kShovbRp1pTYjdLAe4Jd1jSh5kTF%2BIp898lzQyIQQTsrn5ycyNko5M2ER%2BYapo5TP4NnPCnlErJ5bfaA%3D%3D"
+            "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/https://storage.googleapis.com/witslab-seller-preprod/logo?GoogleAccessId=ondc-initiative-sa%40ondc-initiative.iam.gserviceaccount.com&Expires=2104099221&Signature=Scz8H9aKGN1dTGEcJf2eT7zda%2Bm3DO68ufqs%2FnJWDonouOTnMA6k1gYzQZkoaa3XhGfM0RkrGREijts1UT ajHyjQLyvBhWwLJnQCbahwkbNBwhU%2B%2Bp3V6t54NUJR4qCZzwyqVZazoROenSNZqch7XGaa6ZTTxpy3SyxBAH1xkuLVQGYvpiYY5K3Cyw4wxelN7ilkhTMbJWcQ63CXGhXfDE4iIpIBgIjz5ZGcpQxMo9HbteZbdSTjurrnfCo1fPGLn1%2Bfm4kShovbRp1pTYjdLAe4Jd1jSh5kTF%2BIp898lzQyIQQTsrn5ycyNko5M2ER%2BYapo5TP4NnPCnlErJ5bfaA%3D%3D"
           ],
           "name": "naman Unique Quality Store",
           "short_desc": "naman Unique Quality Store",
@@ -255,7 +330,7 @@
             "time": {
               "range": {
                 "start": "2025-04-24T13:48:37.410Z",
-                "end": "2025-04-24T17:48:37.410Z"
+                "end": "2025-04-24T17:讲48:37.410Z"
               }
             },
             "contact": {
@@ -530,7 +605,7 @@
         "collected_by": "BAP",
         "@ondc/org/buyer_app_finder_fee_type": "percent",
         "@ondc/org/buyer_app_finder_fee_amount": "3.0",
-        "@ondc/org/settlement_basis": "delivery",
+        "@ondc/org/ Appsettlement_basis": "delivery",
         "@ondc/org/settlement_window": "P1D",
         "@ondc/org/settlement_details": [
           {
@@ -827,5 +902,7 @@
         : "❌ The order is NOT cancellable";
     }
   </script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

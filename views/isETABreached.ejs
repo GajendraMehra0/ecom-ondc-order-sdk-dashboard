@@ -1,90 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Check ETA Breach</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <head>
+    <meta charset="UTF-8">
+    <title>Check if Order is Cancellable</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .navbar {
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f9f9f9;
-      color: #333;
-      margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h1 {
-      color: #222;
-      margin-bottom: 10px;
-    }
-
-    p {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    textarea {
-      width: 100%;
-      max-width: 800px;
-      height: 300px;
-      padding: 12px;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #fff;
-      resize: vertical;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    #result {
-      margin-top: 30px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .success {
-      color: #28a745;
-    }
-
-    .failure {
-      color: #dc3545;
-    }
-
-    @media (max-width: 600px) {
+      }
+  
+      .navbar-brand {
+        color: #0056b3 !important;
+        font-weight: 600;
+        font-size: 1.5rem;
+      }
+      .brand-logo {
+        height: 60px;
+        /* width: auto;
+        max-width: 50%; */
+        object-fit: contain;
+      }
+  
+      .navbar-nav .nav-link {
+        color: #0056b3 !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 8px 15px;
+      }
+  
+      .navbar-nav .nav-link:hover {
+        color: #ffffff !important;
+        background-color: #007bff;
+        border-radius: 5px;
+      }
+  
+      * {
+        box-sizing: border-box;
+      }
+  
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        margin: 0;
+        padding: 40px 20px;
+        padding-top: 100px; /* Adjusted for fixed navbar */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+  
+      h1 {
+        color: #222;
+        margin-bottom: 10px;
+      }
+  
+      p {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+  
       textarea {
-        height: 250px;
-      }
-
-      button {
         width: 100%;
+        max-width: 800px;
+        height: 300px;
+        padding: 12px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        resize: vertical;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       }
-    }
-  </style>
-</head>
+  
+      button {
+        margin-top: 20px;
+        padding: 12px 24px;
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+  
+      button:hover {
+        background-color: #0056b3;
+      }
+  
+      #result {
+        margin-top: 30px;
+        font-size: 18px;
+        font-weight: bold;
+      }
+  
+      @media (max-width: 600px) {
+        textarea {
+          height: 250px;
+        }
+  
+        button {
+          width: 100%;
+        }
+  
+        .navbar-nav .nav-link {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
 <body>
+  <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <img
+          src="https://ondc.org/assets/ondc-buyer-apps/images/digihaat.png"
+          class="brand-logo"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div
+        class="collapse navbar-collapse justify-content-end"
+        id="navbarNav"
+      >
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/isCancellable">Cancel Request</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/refund">Refund Request</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/eta-check">ETA-Breached</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <h1>Check ETA Breach</h1>
 
   <p>Paste your JSON payload below:</p>
@@ -779,6 +846,7 @@
   <div id="result"></div>
 
   <script>
+  
     // Define the function to calculate ETA breach
     const isETABreached = (data) => {
       if (!data || typeof data !== "object" || Array.isArray(data)) {
