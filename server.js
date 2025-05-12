@@ -1,9 +1,13 @@
-const express = require("express");
-const path = require("path");
-const { isETABreached } = require("../src/eta/"); // Adjust this path to match your project
+import express from "express";
+import path from "path";
+import { isETABreached } from "./src/eta.js";  // Add .js extension
+import { refund } from "./src/refund.js";  // Add .js extension
 
 const app = express();
 const port = 3000;
+
+// Get the current directory using import.meta.url (for ES modules)
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 // Set view engine
 app.set("view engine", "ejs");
@@ -17,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/isCancellable", (req, res) => {
   try {
     console.log("Rendering isCancellable page...");
-    res.render("isCancellable"); // You must have views/isCancellable.ejs
+    res.render("isCancellable");
   } catch (err) {
     console.error("Error rendering isCancellable page:", err);
     res.status(500).send("Internal Server Error");
@@ -28,7 +32,7 @@ app.get("/isCancellable", (req, res) => {
 app.get("/eta-check", (req, res) => {
   try {
     console.log("Rendering ETA check page...");
-    res.render("etaCheck", { result: undefined }); // You must have views/etaCheck.ejs
+    res.render("isETABreached", { result: undefined });
   } catch (err) {
     console.error("Error rendering ETA check page:", err);
     res.status(500).send("Internal Server Error");
@@ -57,12 +61,52 @@ app.post("/eta-check", (req, res) => {
     };
 
     const result = isETABreached(data);
-    res.render("etaCheck", { result });
+    res.render("isETABreached", { result: { isETABreached: result } });
   } catch (err) {
     console.error("Error processing ETA check:", err);
-    res.render("etaCheck", { result: `Error: ${err.message}` });
+    res.render("isETABreached", { result: `Error: ${err.message}` });
   }
 });
+
+// ---------- NEW: Refund Route Starts Here ----------
+
+// GET route to render refund input form
+app.get("/refund", (req, res) => {
+  res.render("refund", { refundResult: undefined, error: undefined });
+});
+
+// POST route to process refund
+app.post("/refund", (req, res) => {
+  try {
+    const {
+      actor,
+      actionType,
+      action,
+      isETABreached,
+      charge,
+      on_cancelPayload,
+    } = req.body;
+
+    const refundAmount = refund(
+      actor,
+      actionType,
+      action,
+      isETABreached === "true",
+      JSON.parse(charge),
+      JSON.parse(on_cancelPayload)
+    );
+
+    res.render("refund", { refundResult: refundAmount, error: undefined });
+  } catch (err) {
+    console.error("Error calculating refund:", err);
+    res.render("refund", {
+      refundResult: undefined,
+      error: err.message,
+    });
+  }
+});
+
+// ---------- Refund Route Ends Here ----------
 
 // Start server
 app.listen(port, () => {
