@@ -58,13 +58,12 @@ app.post("/eta-check", (req, res) => {
     };
 
     const result = isETABreached(data);
-    res.render("isETABreached", { result });
+    res.render("isETABreached", { result: { isETABreached: result } });
   } catch (err) {
     console.error("Error processing ETA check:", err);
     res.render("isETABreached", { result: `Error: ${err.message}` });
   }
 });
-
 
 // ---------- NEW: Refund Route Starts Here ----------
 

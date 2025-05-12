@@ -4,123 +4,170 @@
   <meta charset="UTF-8">
   <title>Check ETA Breach</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f7fc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f9f9f9;
       color: #333;
       margin: 0;
-      padding: 0;
-    }
-    .container {
-      width: 80%;
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #007BFF;
-    }
-    form {
+      padding: 40px 20px;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      align-items: center;
     }
-    label {
-      font-weight: bold;
+
+    h1 {
+      color: #222;
+      margin-bottom: 10px;
     }
-    input, select, button {
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+
+    p {
       font-size: 16px;
+      margin-bottom: 10px;
     }
+
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 300px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+      resize: vertical;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
     button {
+      margin-top: 20px;
+      padding: 12px 24px;
       background-color: #007BFF;
       color: white;
-      cursor: pointer;
       border: none;
-      font-weight: bold;
-      transition: background-color 0.3s;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #0056b3;
     }
-    .result {
-      margin-top: 20px;
-      text-align: center;
-      display: none; /* Hide the result section initially */
-    }
-    .result.show {
-      display: block; /* Show the result only when it's submitted */
-    }
-    .result h2 {
+
+    #result {
+      margin-top: 30px;
       font-size: 18px;
-      padding: 10px;
-      border-radius: 4px;
+      font-weight: bold;
     }
+
     .success {
-      background-color: #28a745;
-      color: white;
+      color: #28a745;
     }
+
     .failure {
-      background-color: #dc3545;
-      color: white;
+      color: #dc3545;
     }
-    .error {
-      background-color: #ffc107;
-      color: black;
+
+    @media (max-width: 600px) {
+      textarea {
+        height: 250px;
+      }
+
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Check ETA Breach</h1>
+  <h1>Check ETA Breach</h1>
 
-    <form action="/eta-check" method="POST">
-      <label for="createdAt">Created At (ISO datetime):</label>
-      <input type="datetime-local" id="createdAt" name="createdAt" required><br><br>
+  <p>Paste your JSON payload below:</p>
+  <textarea id="jsonInput">
+{
+  "createdAt": "2025-05-12T10:00:00Z",
+  "domain": "ONDC:RET10",
+  "fulfillments": [
+    {
+      "type": "Delivery",
+      "@ondc/org/TAT": "PT1H30M",
+      "state": {
+        "descriptor": {
+          "code": "Order-picked-up"
+        }
+      }
+    }
+  ]
+}
+  </textarea>
 
-      <label for="domain">Domain:</label>
-      <select id="domain" name="domain" required>
-        <option value="ONDC:RET10">ONDC:RET10</option>
-        <option value="ONDC:RET11">ONDC:RET11</option>
-      </select><br><br>
+  <button onclick="checkETABreach()">Check</button>
 
-      <label for="tat">TAT Duration (e.g., PT1H30M):</label>
-      <input type="text" id="tat" name="tat" placeholder="PT1H30M" required><br><br>
+  <div id="result"></div>
 
-      <label for="stateCode">Fulfillment State Code:</label>
-      <select id="stateCode" name="stateCode" required>
-        <optgroup label="Exclude Buffer State">
-          <option value="Pending">Pending</option>
-          <option value="Packed">Packed</option>
-          <option value="Agent-assigned">Agent-assigned</option>
-          <option value="Out-for-pickup">Out-for-pickup</option>
-          <option value="Pickup-failed">Pickup-failed</option>
-        </optgroup>
-        <optgroup label="Include Buffer State">
-          <option value="Order-picked-up">Order-picked-up</option>
-          <option value="In-transit">In-transit</option>
-          <option value="At-destination-hub">At-destination-hub</option>
-          <option value="Out-for-delivery">Out-for-delivery</option>
-          <option value="Delivery-failed">Delivery-failed</option>
-        </optgroup>
-      </select><br><br>
+  <script>
+    // Define the function to calculate ETA breach
+    const isETABreached = (data) => {
+      if (!data || typeof data !== "object" || Array.isArray(data)) {
+        return false;
+      }
 
-      <button type="submit">Check ETA</button>
-    </form>
+      if (!data.fulfillments || !Array.isArray(data.fulfillments)) {
+        return false;
+      }
 
-    <% if (typeof result !== 'undefined') { %>
-      <div class="result <%= result ? 'show' : '' %>">
-        <h2 class="<%= result === true ? 'success' : result === false ? 'failure' : 'error' %>">
-          <%= result === true ? "✅ ETA Breached" : result === false ? "❌ ETA Not Breached" : "❗ " + result %>
-        </h2>
-      </div>
-    <% } %>
-  </div>
+      const deliveryFulfillment = data?.fulfillments?.find(
+        (fulfillment) => fulfillment?.type === "Delivery"
+      );
+      if (!deliveryFulfillment || !deliveryFulfillment["@ondc/org/TAT"]) {
+        return false;
+      }
+
+      const createdAt = new Date(data.createdAt);
+      const deliveryTime = isoDurationToMilliseconds(deliveryFulfillment["@ondc/org/TAT"]);
+      const deliveryETA = new Date(createdAt.getTime() + deliveryTime);
+
+      const currentTime = new Date();
+      return currentTime >= deliveryETA;
+    };
+
+    // Convert ISO duration to milliseconds
+    function isoDurationToMilliseconds(iso) {
+      const regex = /P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
+      const match = iso.match(regex);
+
+      if (!match) return 0;
+
+      const days = parseInt(match[1] || "0", 10);
+      const hours = parseInt(match[2] || "0", 10);
+      const minutes = parseInt(match[3] || "0", 10);
+      const seconds = parseInt(match[4] || "0", 10);
+
+      return (((days * 24 + hours) * 60 + minutes) * 60 + seconds) * 1000;
+    }
+
+    function checkETABreach() {
+      const input = document.getElementById("jsonInput").value;
+      let data;
+
+      try {
+        data = JSON.parse(input);
+      } catch (err) {
+        document.getElementById("result").innerText = "❌ Invalid JSON format.";
+        return;
+      }
+
+      const result = isETABreached(data);
+      document.getElementById("result").innerText = result
+        ? "✅ ETA Breached"
+        : "❌ ETA Not Breached";
+      document.getElementById("result").className = result ? "success" : "failure";
+    }
+  </script>
 </body>
 </html>
