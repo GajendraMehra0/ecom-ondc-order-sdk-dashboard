@@ -159,7 +159,26 @@
       background-color: #3182ce;
     }
 
-    /* Modal Styles */
+    /* Collapsible JSON */
+    .static-json {
+      margin-top: 10px;
+      font-size: 12px;
+      background-color: #f1f5f9;
+      padding: 10px;
+      border: 1px dashed #cbd5e0;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    details summary {
+      cursor: pointer;
+      margin-top: 10px;
+      font-weight: 500;
+      color: #2c5282;
+    }
+
+    /* Modal styles omitted for brevity (unchanged) */
     .modal {
       display: none;
       position: fixed;
@@ -167,7 +186,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+      background-color: rgba(0, 0, 0, 0.5);
       justify-content: center;
       align-items: center;
       z-index: 1000;
@@ -177,7 +196,7 @@
       background-color: #ffffff;
       padding: 24px;
       border-radius: 8px;
-      border-left: 4px solid #68d391; /* Green for success */
+      border-left: 4px solid #68d391;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       max-width: 400px;
       width: 90%;
@@ -185,7 +204,7 @@
     }
 
     .modal-content.error {
-      border-left: 4px solid #f56565; /* Red for error */
+      border-left: 4px solid #f56565;
     }
 
     .modal-content h2, .modal-content h3 {
@@ -195,11 +214,11 @@
     }
 
     .modal-content h2 {
-      color: #2f855a; /* Dark green for success text */
+      color: #2f855a;
     }
 
     .modal-content h3 {
-      color: #9b2c2c; /* Dark red for error text */
+      color: #9b2c2c;
     }
 
     .close-btn {
@@ -213,7 +232,6 @@
       padding: 4px 8px;
       cursor: pointer;
       font-size: 14px;
-      transition: background-color 0.2s ease;
     }
 
     .close-btn:hover {
@@ -260,11 +278,679 @@
     </label>
 
     <label>Charge Payload (JSON) *
-      <textarea name="charge" rows="6" required></textarea>
+      <textarea name="charge" rows="6" placeholder="Paste or edit your JSON here...">{
+      "transactionId": "2d074a8b-568d-447c-a394-e49f9cc42406",
+      "__v": 0,
+      "createdAt": {
+        "$date": "2025-04-29T07:58:55.915Z"
+      },
+      "history": [],
+      "quote": {
+        "itemsList": [
+          {
+            "itemId": "66bc5faf91c33645fda23b36",
+            "name": "Cheese Chaska",
+            "sellerPrice": 278.25,
+            "price": 278.25,
+            "tax": 13.25,
+            "sellerDiscount": 0,
+            "basePriceWithoutTax": 265,
+            "quantity": 1,
+            "parentItemId": null,
+            "basePrice": 278.25,
+            "discountedBasePrice": 278.25
+          },
+          {
+            "itemId": "66bc5faf91c33645fda23b63",
+            "name": "Cheese Maska",
+            "sellerPrice": 478.25,
+            "price": 478.25,
+            "tax": 13.25,
+            "sellerDiscount": 0,
+            "basePriceWithoutTax": 465,
+            "quantity": 2,
+            "parentItemId": null,
+            "basePrice": 478.25,
+            "discountedBasePrice": 478.25
+          }
+        ],
+        "subsidyCriteriaCharge": null,
+        "distance": null,
+        "distanceType": "KM",
+        "platformFees": 2.54,
+        "subsidyCapping": null,
+        "transactionId": null,
+        "totalOrderValue": "1280.25",
+        "itemCost": 265,
+        "taxes": {
+          "itemTaxes": 13.25,
+          "platformFeesTax": 0.46
+        },
+        "sellerFees": {
+          "miscCharge": 0,
+          "packingCharge": 0,
+          "sellerDiscount": 0
+        },
+        "totalOrderValueAfterSubsidy": 1300.25,
+        "deliveryItemList": [
+          {
+            "baseCharge": 70,
+            "fulfillmentId": "WSD111",
+            "deliveryCharge": 70,
+            "digiHaatSubsidy": 0,
+            "snpDiscount": 0
+          }
+        ],
+        "combinedDeliveryItemList": {
+          "baseCharge": 70,
+          "fulfillmentId": "WSD111",
+          "deliveryCharge": 70,
+          "digiHaatSubsidy": 0,
+          "snpDiscount": 0
+        },
+        "offer": {},
+        "applySubsidy": false,
+        "subsidyCriteriaDistance": null,
+        "totalOrderValueAfterSubsidyBeforeCoupon": 1300.25,
+        "subsidy": 0,
+        "mov": 500.25,
+        "ONDC_FA": 0,
+        "totalProductDiscount": 0
+      },
+      "updatedAt": {
+        "$date": "2025-04-29T07:58:55.915Z"
+      }
+    }</textarea>
     </label>
 
+    <!-- <details>
+      <summary>Click to use sample Charge Payload</summary>
+      <div class="static-json">
+        {
+          "transactionId": "2d074a8b-568d-447c-a394-e49f9cc42406",<br>
+          "quote": {
+            "itemsList": [
+              { "itemId": "66bc5faf91c33645fda23b36", "name": "Cheese Chaska", "price": 278.25 },
+              { "itemId": "66bc5faf91c33645fda23b63", "name": "Cheese Maska", "price": 478.25, "quantity": 2 }
+            ],
+            "platformFees": 2.54,
+            "totalOrderValue": "1280.25"
+          }
+        }
+      </div>
+    </details> -->
+
     <label>on_cancelPayload (JSON) *
-      <textarea name="on_cancelPayload" rows="6" required></textarea>
+      <textarea name="on_cancelPayload" rows="20" placeholder="Paste or edit your JSON here...">
+    {
+      "_id": "680a4128fc1b82b2f4c28dd1",
+      "provider": {
+        "id": "01a9149b-1fa4-4175-8aec-1c0f25bd990d",
+        "locations": [
+          {
+            "id": "01a9149b-1fa4-4175-8aec-1c0f25bd990d"
+          }
+        ],
+        "descriptor": {
+          "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/https://storage.googleapis.com/witslab-seller-preprod/logo?GoogleAccessId=ondc-initiative-sa%40ondc-initiative.iam.gserviceaccount.com&Expires=2104099221&Signature=Scz8H9aKGN1dTGEcJf2eT7zda%2Bm3DO68ufqs%2FnJWDonouOTnMA6k1gYzQZkoaa3XhGfM0RkrGREijts1UTajHyjQLyvBhWwLJnQCbahwkbNBwhU%2B%2Bp3V6t54NUJR4qCZzwyqVZazoROenSNZqch7XGaa6ZTTxpy3SyxBAH1xkuLVQGYvpiYY5K3Cyw4wxelN7ilkhTMbJWcQ63CXGhXfDE4iIpIB@ondc/org/TATgIjz5ZGcpQxMo9HbteZbdSTjurrnfCo1fPGLn1%2Bfm4kShovbRp1pTYjdLAe4Jd1jSh5kTF%2BIp898lzQyIQQTsrn5ycyNko5M2ER%2BYapo5TP4NnPCnlErJ5bfaA%3D%3D",
+          "images": [
+            "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/https://storage.googleapis.com/witslab-seller-preprod/logo?GoogleAccessId=ondc-initiative-sa%40ondc-initiative.iam.gserviceaccount.com&Expires=2104099221&Signature=Scz8H9aKGN1dTGEcJf2eT7zda%2Bm3DO68ufqs%2FnJWDonouOTnMA6k1gYzQZkoaa3XhGfM0RkrGREijts1UTajHyjQLyvBhWwLJnQCbahwkbNBwhU%2B%2Bp3V6t54NUJR4qCZzwyqVZazoROenSNZqch7XGaa6ZTTxpy3SyxBAH1xkuLVQGYvpiYY5K3Cyw4wxelN7ilkhTMbJWcQ63CXGhXfDE4iIpIBgIjz5ZGcpQxMo9HbteZbdSTjurrnfCo1fPGLn1%2Bfm4kShovbRp1pTYjdLAe4Jd1jSh5kTF%2BIp898lzQyIQQTsrn5ycyNko5M2ER%2BYapo5TP4NnPCnlErJ5bfaA%3D%3D"
+          ],
+          "name": "naman Unique Quality Store",
+          "short_desc": "naman Unique Quality Store",
+          "long_desc": "naman Unique Quality Store"
+        }
+      },
+      "transactionId": "5bfc58f7-8ae2-4bb8-8a0b-94ecc6d14d9f",
+      "__v": 0,
+      "bppId": "witslab-bpp-preprod.thewitslab.com",
+      "bpp_uri": "https://witslab-bpp-preprod.thewitslab.com/api/v2",
+      "city": "std:0172",
+      "confirmedItems": [
+        {
+          "id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+          "quantity": {
+            "count": 1
+          },
+          "tags": [
+            {
+              "code": "type",
+              "list": [
+                {
+                  "code": "type",
+                  "value": "item"
+                }
+              ]
+            }
+          ],
+          "product": {
+            "id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "subtotal": 100,
+            "time": {
+              "label": "enable",
+              "timestamp": "2025-04-24T10:44:25.447Z"
+            },
+            "parent_item_id": "s9LqJ1",
+            "descriptor": {
+              "name": "Apple",
+              "code": "1:1230",
+              "symbol": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/36f80d94-893d-49ab-9d64-a4c46ca68e6a/product_image/64f0bba619253f21ac6e7b38-fresh-red-delicious-apple-each (3).jpg.jpeg",
+              "short_desc": "It has a delightful flavor that hits every note: spiced, salty, sour.",
+              "long_desc": "It has a delightful flavor that hits every note: spiced, salty, sour.",
+              "images": [
+                "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/36f80d94-893d-49ab-9d64-a4c46ca68e6a/product_image/64f0bba619253f21ac6e7b38-fresh-red-delicious-apple-each (3).jpg.jpeg",
+                "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/164a9858-26e6-4ef2-8404-e1ed201a7b63/product_image/64f0bba619253f21ac6e7b38-fresh-red-delicious-apple-each (2).jpg.jpeg",
+                "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/4d1255a7-bc8e-435b-abac-4bb275b88b53/product_image/64f0bba619253f21ac6e7b38-fresh-red-delicious-apple-each (1).jpg.jpeg"
+              ]
+            },
+            "quantity": {
+              "unitized": {
+                "measure": {
+                  "unit": "kilogram",
+                  "value": "2"
+                }
+              },
+              "available": {
+                "count": "99"
+              },
+              "maximum": {
+                "count": "5"
+              }
+            },
+            "price": {
+              "currency": "INR",
+              "value": 100,
+              "maximum_value": "100"
+            },
+            "category_id": "Fruits and Vegetables",
+            "location_id": "01a9149b-1fa4-4175-8aec-1c0f25bd990d",
+            "@ondc/org/returnable": true,
+            "@ondc/org/cancellable": true,
+            "@ondc/org/available_on_cod": false,
+            "@ondc/org/time_to_ship": "PT1H",
+            "@ondc/org/seller_pickup_return": true,
+            "@ondc/org/return_window": "PT24H",
+            "@ondc/org/contact_details_consumer_care": "naman Unique Quality Store,naman.pawar@thewitslab.com,7505390422",
+            "@ondc/org/statutory_reqs_packaged_commodities": {
+              "manufacturer_or_packer_name": "Aagaz Self Help Group",
+              "manufacturer_or_packer_address": "Village-Chameti,Post Office-Kuhna, Tehsil-Rakkar, District-Kangra Pin-177043, Himachal Pradesh",
+              "common_or_generic_name_of_commodity": "Apple",
+              "month_year_of_manufacture_packing_import": "02/2025"
+            },
+            "tags": [
+              {
+                "code": "origin",
+                "list": [
+                  {
+                    "code": "country",
+                    "value": "IND"
+                  }
+                ]
+              },
+              {
+                "code": "type",
+                "list": [
+                  {
+                    "code": "type",
+                    "value": "item"
+                  }
+                ]
+              },
+              {
+                "code": "image",
+                "list": [
+                  {
+                    "code": "type",
+                    "value": "back_image"
+                  },
+                  {
+                    "code": "url",
+                    "value": "https://reference-buyer-app-assets.s3-ap-south-1.amazonaws.com/public-assets/fb0ee368-224f-4907-9139-7700c4154ade/product_image/64f0bba619253f21ac6e7b38-fresh-red-delicious-apple-each.jpg.jpeg"
+                  }
+                ]
+              },
+              {
+                "code": "veg_nonveg",
+                "list": [
+                  {
+                    "code": "veg",
+                    "value": "yes"
+                  }
+                ]
+              }
+            ]
+          },
+          "fulfillment_id": "Fulfillment1"
+        }
+      ],
+      "createdAt": "2025-05-12T13:48:24.454Z",
+      "domain": "ONDC:RET10",
+      "fulfillments": [
+        {
+          "id": "Fulfillment1",
+          "@ondc/org/provider_name": "naman Unique Quality Store",
+          "state": {
+            "descriptor": {
+              "code": "Pending"
+            }
+          },
+          "type": "Delivery",
+          "@ondc/org/TAT": "PT24H",
+          "tracking": false,
+          "start": {
+            "location": {
+              "id": "01a9149b-1fa4-4175-8aec-1c0f25bd990d",
+              "descriptor": {
+                "name": "naman Unique Quality Store"
+              },
+              "gps": "30.75491511912993,76.65374100208282",
+              "address": {
+                "city": "Mohali",
+                "state": "Punjab",
+                "area_code": "140301",
+                "locality": "Sector 125"
+              }
+            },
+            "time": {
+              "range": {
+                "start": "2025-04-24T13:48:37.410Z",
+                "end": "2025-04-24T17:48:37.410Z"
+              }
+            },
+            "contact": {
+              "phone": "7505390422",
+              "email": "naman.pawar@thewitslab.com"
+            }
+          },
+          "end": {
+            "person": {
+              "name": "Suryajeet "
+            },
+            "contact": {
+              "phone": "7348028811"
+            },
+            "location": {
+              "gps": "30.745298,76.653273",
+              "address": {
+                "name": "Suryajeet ",
+                "building": "surya flat",
+                "locality": "Chandigarh Nangal Road, Janta Nagar",
+                "city": "Kharar",
+                "state": "Punjab",
+                "country": "IND",
+                "area_code": "140301"
+              }
+            },
+            "time": {
+              "range": {
+                "start": "2025-04-24T13:48:37.410Z",
+                "end": "2025-04-24T17:48:37.410Z"
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+          "quantity": {
+            "count": 1
+          },
+          "fulfillment_id": "Fulfillment1"
+        }
+      ],
+      "messageId": "b30ddea7-3a56-4364-b102-49d8cf9e478d",
+      "parentOrderId": "5bfc58f7-8ae2-4bb8-8a0b-94ecc6d14d9f",
+      "paymentStatus": "PAID",
+      "updatedAt": "2025-05-12T13:48:24.454Z",
+      "userId": "SzJlK05zu6V1KinyDGEizKQyEoy2",
+      "billing": {
+        "name": "Suryajeet ",
+        "phone": "7348028811",
+        "address": {
+          "name": "Suryajeet ",
+          "building": "surya flat",
+          "locality": "Chandigarh Nangal Road, Janta Nagar",
+          "city": "Kharar",
+          "state": "Punjab",
+          "country": "IND",
+          "areaCode": "140301"
+        },
+        "updated_at": "2025-04-24T13:48:23.678Z",
+        "created_at": "2025-04-24T13:48:23.678Z"
+      },
+      "payment": {
+        "uri": "https://razorpay.com/",
+        "params": {
+          "amount": "412.64",
+          "currency": "INR",
+          "transaction_id": "order_QMutiHhHfdYZbN"
+        },
+        "type": "ON-ORDER",
+        "status": "PAID"
+      },
+      "quote": {
+        "price": {
+          "currency": "INR",
+          "value": "412.64"
+        },
+        "breakup": [
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "@ondc/org/item_quantity": {
+              "count": 1
+            },
+            "title": "Apple",
+            "@ondc/org/title_type": "item",
+            "price": {
+              "currency": "INR",
+              "value": "100"
+            },
+            "item": {
+              "price": {
+                "currency": "INR",
+                "value": "100"
+              },
+              "tags": [
+                {
+                  "code": "type",
+                  "list": [
+                    {
+                      "code": "type",
+                      "value": "item"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "@ondc/org/item_id": "Fulfillment1",
+            "title": "Packing charges",
+            "@ondc/org/title_type": "packing",
+            "price": {
+              "currency": "INR",
+              "value": "20"
+            }
+          },
+          {
+            "@ondc/org/item_id": "Fulfillment1",
+            "title": "Convenience Fee",
+            "@ondc/org/title_type": "misc",
+            "price": {
+              "currency": "INR",
+              "value": "187.26"
+            }
+          },
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "title": "ONDC_FA",
+            "@ondc/org/title_type": "discount",
+            "price": {
+              "currency": "INR",
+              "value": "-7"
+            }
+          },
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "title": "Tax",
+            "@ondc/org/title_type": "tax",
+            "price": {
+              "currency": "INR",
+              "value": "5"
+            }
+          },
+          {
+            "title": "Delivery charges",
+            "@ondc/org/title_type": "delivery",
+            "@ondc/org/item_id": "Fulfillment1",
+            "price": {
+              "currency": "INR",
+              "value": "107.38"
+            }
+          }
+        ],
+        "ttl": "P1D"
+      },
+      "settlementDetails": {
+        "type": "ON-ORDER",
+        "collected_by": "BAP",
+        "@ondc/org/buyer_app_finder_fee_type": "percent",
+        "@ondc/org/buyer_app_finder_fee_amount": "3.0",
+        "@ondc/org/settlement_basis": "delivery",
+        "@ondc/org/settlement_window": "P1D",
+        "@ondc/org/settlement_details": [
+          {
+            "settlement_counterparty": "seller-app",
+            "settlement_phase": "sale-amount",
+            "settlement_type": "neft",
+            "settlement_bank_account_no": "2941010005432",
+            "settlement_ifsc_code": "SBIN0010747",
+            "beneficiary_name": "prabal",
+            "bank_name": "State Bank of India",
+            "branch_name": "KHARAR"
+          }
+        ]
+      },
+      "tags": [
+        {
+          "code": "bpp_terms",
+          "list": [
+            {
+              "code": "tax_number",
+              "value": "09AAACH7409R1ZZ"
+            },
+            {
+              "code": "provider_tax_number",
+              "value": "ABCDE1234F"
+            },
+            {
+              "code": "np_type",
+              "value": "MSN"
+            }
+          ]
+        },
+        {
+          "code": "bap_terms",
+          "list": [
+            {
+              "code": "tax_number",
+              "value": "07AADCO6651K1Z5"
+            }
+          ]
+        }
+      ],
+      "state": "Accepted",
+      "id": "2025-04-24-000016",
+      "updatedQuote": {
+        "price": {
+          "value": "412.64",
+          "currency": "INR"
+        },
+        "breakup": [
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "@ondc/org/item_quantity": {
+              "count": 1
+            },
+            "title": "Apple",
+            "@ondc/org/title_type": "item",
+            "price": {
+              "currency": "INR",
+              "value": "100"
+            },
+            "item": {
+              "price": {
+                "currency": "INR",
+                "value": "100"
+              },
+              "tags": [
+                {
+                  "code": "type",
+                  "list": [
+                    {
+                      "code": "type",
+                      "value": "item"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "@ondc/org/item_id": "Fulfillment1",
+            "title": "Packing charges",
+            "@ondc/org/title_type": "packing",
+            "price": {
+              "currency": "INR",
+              "value": "20"
+            }
+          },
+          {
+            "@ondc/org/item_id": "Fulfillment1",
+            "title": "Convenience Fee",
+            "@ondc/org/title_type": "misc",
+            "price": {
+              "currency": "INR",
+              "value": "187.26"
+            }
+          },
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "title": "ONDC_FA",
+            "@ondc/org/title_type": "discount",
+            "price": {
+              "currency": "INR",
+              "value": "-7"
+            }
+          },
+          {
+            "@ondc/org/item_id": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+            "title": "Tax",
+            "@ondc/org/title_type": "tax",
+            "price": {
+              "currency": "INR",
+              "value": "5"
+            }
+          },
+          {
+            "title": "Delivery charges",
+            "@ondc/org/title_type": "delivery",
+            "@ondc/org/item_id": "Fulfillment1",
+            "price": {
+              "currency": "INR",
+              "value": "107.38"
+            }
+          }
+        ],
+        "ttl": "P1D"
+      },
+      "orderHistory": [
+        {
+          "_id": "680a416366d29b02b9c02be6",
+          "orderId": "2025-04-24-000016",
+          "updatedAt": "Thu Apr 24 2025 13:49:23 GMT+0000 (Coordinated Universal Time)",
+          "state": "Created",
+          "createdAt": "2025-04-24T13:49:23.621Z",
+          "__v": 0
+        },
+        {
+          "_id": "680a515ac7102ec75c0b8e90",
+          "orderId": "2025-04-24-000016",
+          "updatedAt": "Thu Apr 24 2025 14:57:30 GMT+0000 (Coordinated Universal Time)",
+          "state": "Accepted",
+          "createdAt": "2025-04-24T14:57:30.944Z",
+          "__v": 0
+        }
+      ],
+      "fulfillmentHistory": [
+        {
+          "_id": "680a413566d29b02b9c02bc8",
+          "orderId": "2025-04-24-000016",
+          "type": "Delivery",
+          "state": "Pending",
+          "id": "Fulfillment1",
+          "updatedAt": "Thu Apr 24 2025 13:48:37 GMT+0000 (Coordinated Universal Time)",
+          "createdAt": "2025-04-24T13:48:37.584Z",
+          "__v": 0
+        }
+      ],
+      "charges": {
+        "_id": "680a4118fc1b82b2f4c28b94",
+        "transactionId": "5bfc58f7-8ae2-4bb8-8a0b-94ecc6d14d9f",
+        "__v": 0,
+        "createdAt": "2025-04-24T13:48:08.417Z",
+        "history": [],
+        "quote": {
+          "itemsList": [
+            {
+              "itemId": "52aeb16f-aaec-4aad-9178-8c5003ca9d77",
+              "name": "Apple",
+              "sellerPrice": 105,
+              "price": 98,
+              "tax": 5,
+              "sellerDiscount": 7,
+              "basePriceWithoutTax": 100,
+              "quantity": 1,
+              "parentItemId": null,
+              "basePrice": 98,
+              "discountedBasePrice": 98,
+              "discount": 7
+            }
+          ],
+          "subsidyCriteriaCharge": 15,
+          "distance": "1.61",
+          "distanceType": "KM",
+          "platformFees": 2.54,
+          "subsidyCapping": 50,
+          "transactionId": null,
+          "totalOrderValue": "412.64",
+          "itemCost": 93,
+          "taxes": {
+            "itemTaxes": 5,
+            "platformFeesTax": 0.46
+          },
+          "sellerFees": {
+            "miscCharge": 187.26,
+            "packingCharge": 20,
+            "sellerDiscount": 0
+          },
+          "totalOrderValueAfterSubsidy": 260.64,
+          "deliveryItemList": [
+            {
+              "baseCharge": 107.38,
+              "fulfillmentId": "Fulfillment1",
+              "deliveryCharge": 57.38,
+              "digiHaatSubsidy": 50,
+              "snpDiscount": 0
+            }
+          ],
+          "combinedDeliveryItemList": {
+            "baseCharge": 107.38,
+            "fulfillmentId": "Fulfillment1",
+            "deliveryCharge": 57.38,
+            "digiHaatSubsidy": 50,
+            "snpDiscount": 0
+          },
+          "offer": {
+            "benefit": 105,
+            "coupon": "TLCOUPON",
+            "id": "8ab16430-edf0-11ef-8cac-2b8b0c7573de"
+          },
+          "applySubsidy": true,
+          "subsidyCriteriaDistance": 10,
+          "totalOrderValueAfterSubsidyBeforeCoupon": 365.64,
+          "subsidy": 50,
+          "mov": 105,
+          "ONDC_FA": -7,
+          "totalProductDiscount": -7
+        },
+        "updatedAt": "2025-04-24T13:48:12.927Z"
+      },
+      "isETABreached": false,
+      "isCancellable": false
+    }
+      </textarea>
     </label>
 
     <div class="button-container">
@@ -273,7 +959,7 @@
     </div>
   </form>
 
-  <!-- Modal for Result/Error -->
+  <!-- Modal for Result -->
   <% if (typeof refundResult !== 'undefined') { %>
     <div class="modal" id="resultModal" style="display: flex;">
       <div class="modal-content">
@@ -294,16 +980,13 @@
 
   <script>
     function closeModal() {
-      const modals = document.querySelectorAll('.modal');
-      modals.forEach(modal => {
+      document.querySelectorAll('.modal').forEach(modal => {
         modal.style.display = 'none';
       });
     }
 
-    // Close modal when clicking outside of it
     window.onclick = function(event) {
-      const modals = document.querySelectorAll('.modal');
-      modals.forEach(modal => {
+      document.querySelectorAll('.modal').forEach(modal => {
         if (event.target === modal) {
           modal.style.display = 'none';
         }
