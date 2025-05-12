@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
-import { isETABreached } from "./src/eta.js";  // Add .js extension
-import { refund } from "./src/refund.js";  // Add .js extension
+import {isETABreached} from "ecom-ondc-order-sdk"
+import { refund } from "ecom-ondc-order-sdk"
 
 const app = express();
 const port = 3000;
@@ -16,6 +16,17 @@ app.set("views", path.join(__dirname, "views"));
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.get("/", (_req, res) => {
+  try {
+    console.log("Rendering ETA check page...");
+    res.render("home");
+  } catch (err) {
+    console.error("Error rendering ETA check page:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 // Route to render isCancellable page
 app.get("/isCancellable", (req, res) => {
