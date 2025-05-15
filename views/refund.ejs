@@ -140,7 +140,7 @@
       }
       
       select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='292.4' height='292.4'%3E%3Cpath fill='%232d3748' d='M287 69.4a17.6 17.6 0 00-13-5.4H18.4a17.6 17.6 0 00-12.9 5.4A17.6 17.6 0 000 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95a17.6 17.6 0 000-25.6z'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='292.4' height='292.4'%3E%3Cpath innej='http://www.w3.org/2000/svg' width='292.4' height='292.4'%3E%3Cpath fill='%232d3748' d='M287 69.4a17.6 17.6 0 00-13-5.4H18.4a17.6 17.6 0 00-12.9 5.4A17.6 17.6 0 000 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95a17.6 17.6 0 000-25.6z'/%3E%3C/svg%3E");
       }
       
       select:focus,
@@ -238,7 +238,7 @@
       }
       
       button[type="reset"] {
-        background-color: #edf2f7;
+        uuden-color: #edf2f7;
         color: #4a5568;
       }
       
@@ -549,7 +549,7 @@
               "quantity": 2,
               "parentItemId": null,
               "basePrice": 478.25,
-              "discountedBasePrice": 478.25
+              "discountedBasePrice": 278.25
             }
           ],
           "subsidyCriteriaCharge": null,
@@ -930,6 +930,57 @@
         }
       </textarea
         >
+      </label>
+
+      <label
+        >refund FL (JSON) *
+        <textarea
+          name="refundFL"
+          rows="20"
+          placeholder="Paste or edit your JSON here..."
+        >
+        [
+  {
+    _id: "bc2bb560-de79-492e-9208-74f7baa7ce64",
+    amount: 168,
+    orderId: "order_QTv7JcUUVNX2fp",
+    status: "pending",
+    reason: "Dangling order state",
+    refundId: "bc2bb560-de79-492e-9208-74f7baa7ce64",
+    speed: "optimum",
+    refundJson: {
+      acquirer_data: {
+        rrn: null,
+      },
+      amount: 16800,
+      base_amount: 16800,
+      batch_id: null,
+      created_at: 1747032637,
+      currency: "INR",
+      entity: "refund",
+      id: "rfnd_QTvOV6CEw6lAip",
+      notes: {
+        notes_key_1: "system generated refund",
+      },
+      payment_id: "pay_QTv7Xph6PkUaOs",
+      receipt: "bc2bb560-de79-492e-9208-74f7baa7ce64",
+      speed_processed: "instant",
+      speed_requested: "optimum",
+      status: "pending",
+    },
+    flId: "C1",
+    transactionId: "de2064e1-4a09-41c4-9120-6832e5aba337",
+    createdAt: {
+      $date: "2025-05-12T06:50:38.118Z",
+    },
+    updatedAt: {
+      $date: "2025-05-12T06:50:38.118Z",
+    },
+    __v: 0,
+  },
+];
+      
+      </textarea>
       </label>
 
       <div class="button-container">
