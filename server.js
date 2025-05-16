@@ -96,6 +96,7 @@ app.post("/refund", (req, res) => {
       isETABreached,
       charge,
       on_cancelPayload,
+      refundFL
     } = req.body;
 
     const refundAmount = refund(
@@ -104,7 +105,8 @@ app.post("/refund", (req, res) => {
       action,
       isETABreached === "true",
       JSON.parse(charge),
-      JSON.parse(on_cancelPayload)
+      JSON.parse(on_cancelPayload),
+      JSON.parse(refundFL)
     );
 
     res.render("refund", { refundResult: refundAmount, error: undefined });
