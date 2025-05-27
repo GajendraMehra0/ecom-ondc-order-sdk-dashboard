@@ -874,9 +874,13 @@
       "isETABreached": false,
       "isCancellable": false
     }
+  
   </textarea>
 
-  <button onclick="checkCancellable()">Check</button>
+  <div>
+    <button onclick="checkCancellable()">Check</button>
+    <button onclick="resetForm()">Reset</button>
+  </div>
 
   <div id="result"></div>
 
@@ -927,15 +931,39 @@
       try {
         data = JSON.parse(input);
       } catch (err) {
-        document.getElementById("result").innerText = "❌ Invalid JSON format.";
+        const resultText = "❌ Invalid JSON format.";
+        document.getElementById("result").innerText = resultText;
+        localStorage.setItem("result", resultText);
         return;
       }
 
       const result = isCancellable(data);
-      document.getElementById("result").innerText = result
+      const resultText = result
         ? "✅ The order is cancellable"
         : "❌ The order is NOT cancellable";
+      document.getElementById("result").innerText = resultText;
+      localStorage.setItem("result", resultText);
+      localStorage.setItem("jsonInput", input);
     }
+
+    function resetForm() {
+      document.getElementById("jsonInput").value = "";
+      document.getElementById("result").innerText = "";
+      localStorage.removeItem("jsonInput");
+      localStorage.removeItem("result");
+    }
+
+    // Load saved data from localStorage when the page loads
+    window.onload = function() {
+      const savedInput = localStorage.getItem("jsonInput");
+      const savedResult = localStorage.getItem("result");
+      if (savedInput) {
+        document.getElementById("jsonInput").value = savedInput;
+      }
+      if (savedResult) {
+        document.getElementById("result").innerText = savedResult;
+      }
+    };
   </script>
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
