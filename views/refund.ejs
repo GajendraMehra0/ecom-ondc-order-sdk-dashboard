@@ -22,7 +22,7 @@
         align-items: center;
         padding: 15px 30px;
       }
-      
+
       .navbar-brand,
       .custom-navbar .navbar-brand {
         color: #0056b3 !important;
@@ -33,7 +33,7 @@
         align-items: center;
         gap: 10px;
       }
-      
+
       .custom-navbar .navbar-brand img,
       .brand-logo {
         height: 50px;
@@ -48,7 +48,7 @@
         margin: 0;
         padding: 0;
       }
-      
+
       .navbar-nav .nav-link,
       .custom-navbar .navbar-nav .nav-link {
         color: #0056b3 !important;
@@ -58,49 +58,50 @@
         border-radius: 5px;
         transition: all 0.3s ease;
       }
-    
+
       .navbar-nav .nav-link:hover,
       .custom-navbar .navbar-nav .nav-link:hover {
         color: #ffffff !important;
         background-color: #007bff;
       }
-      
+
       @media (max-width: 600px) {
         .custom-navbar .navbar-nav .nav-link {
           padding: 10px;
           margin: 0;
         }
-      
+
         .custom-navbar .navbar-brand img {
           height: 40px;
         }
       }
-      
+
       /* Global Reset */
       * {
         box-sizing: border-box;
       }
-      
+
       /* Body & Layout */
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
         margin: 0;
         padding: 40px 20px;
         padding-top: 100px; /* For fixed navbar */
         background: #f9f9f9;
         color: #1a1a1a;
       }
-      
+
       /* Typography */
       h1 {
         text-align: center;
-        font-family:'Times New Roman', Times, serif;
+        font-family: "Times New Roman", Times, serif;
         font-size: 30px;
         font-weight: 600;
         margin-bottom: 20px;
         color: #000000;
       }
-      
+
       /* Form Container */
       form {
         max-width: 600px;
@@ -112,7 +113,7 @@
         border-left: 4px solid #4299e1;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
-      
+
       /* Form Elements */
       label {
         display: block;
@@ -121,7 +122,7 @@
         font-weight: 500;
         color: #2d3748;
       }
-      
+
       select,
       textarea {
         width: 100%;
@@ -138,11 +139,11 @@
         box-sizing: border-box;
         appearance: none;
       }
-      
+
       select {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='292.4' height='292.4'%3E%3Cpath fill='%232d3748' d='M287 69.4a17.6 17.6 0 00-13-5.4H18.4a17.6 17.6 0 00-12.9 5.4A17.6 17.6 0 000 82.2c0 5 1.8 9.3 5.4 12.9l128 127.9c3.6 3.6 7.8 5.4 12.8 5.4s9.2-1.8 12.8-5.4L287 95a17.6 17.6 0 000-25.6z'/%3E%3C/svg%3E");
       }
-      
+
       select:focus,
       textarea:focus {
         outline: 2px solid #4299e1;
@@ -150,18 +151,18 @@
         border-color: #4299e1;
         box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.2);
       }
-      
+
       select:hover,
       textarea:hover {
         border-color: #a0aec0;
       }
-      
+
       textarea {
         resize: vertical;
         min-height: 80px;
-        font-family: 'Courier New', Courier, monospace;
+        font-family: "Courier New", Courier, monospace;
       }
-      
+
       /* Toggle Switch */
       .toggle-container {
         display: flex;
@@ -169,13 +170,13 @@
         gap: 12px;
         margin-top: 6px;
       }
-      
+
       .toggle-label {
         font-size: 14px;
         font-weight: 500;
         color: #2d3748;
       }
-      
+
       .toggle-switch {
         position: relative;
         display: inline-block;
@@ -183,13 +184,13 @@
         height: 20px;
         cursor: pointer;
       }
-      
+
       .toggle-switch input {
         opacity: 0;
         width: 0;
         height: 0;
       }
-      
+
       .slider {
         position: absolute;
         cursor: pointer;
@@ -198,7 +199,7 @@
         border-radius: 20px;
         transition: 0.4s;
       }
-      
+
       .slider:before {
         position: absolute;
         content: "";
@@ -210,15 +211,15 @@
         border-radius: 50%;
         transition: 0.4s;
       }
-      
+
       input:checked + .slider {
         background-color: #68d391;
       }
-      
+
       input:checked + .slider:before {
         transform: translateX(20px);
       }
-      
+
       /* Buttons */
       .button-container {
         display: flex;
@@ -226,7 +227,7 @@
         gap: 8px;
         margin-top: 24px;
       }
-      
+
       button {
         padding: 8px 16px;
         font-size: 14px;
@@ -236,42 +237,42 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
       }
-      
+
       button[type="reset"] {
         background-color: #edf2f7;
         color: #4a5568;
       }
-      
+
       button[type="reset"]:hover {
         background-color: #e2e8f0;
       }
-      
+
       button[type="submit"] {
         background-color: #4299e1;
         color: white;
       }
-      
+
       button[type="submit"]:hover {
         background-color: #3182ce;
       }
-      
+
       button:focus {
         outline: 2px solid #4299e1;
         outline-offset: 2px;
       }
-      
+
       /* Static JSON Block */
       .static-json {
         margin-top: 10px;
         font-size: 12px;
         background-color: #f1f5f9;
         padding: 10px;
-        border: 1px dashed #cbd5e0;
+        border: 1px dashed #cbd5e0; /* Fixed border color */
         border-radius: 6px;
         white-space: pre-wrap;
         word-break: break-word;
       }
-      
+
       /* Details */
       details summary {
         cursor: pointer;
@@ -279,7 +280,7 @@
         font-weight: 500;
         color: #2c5282;
       }
-      
+
       /* Modal */
       .modal {
         display: none;
@@ -290,11 +291,11 @@
         align-items: center;
         z-index: 1000;
       }
-      
+
       .modal.show {
         display: flex;
       }
-      
+
       .modal-content {
         background-color: #ffffff;
         padding: 24px;
@@ -306,25 +307,25 @@
         position: relative;
         animation: fadeIn 0.3s ease-in-out;
       }
-      
+
       .modal-content.error {
         border-left: 4px solid #f56565;
       }
-      
+
       .modal-content h2 {
         margin: 0 0 16px;
         font-size: 16px;
         font-weight: 500;
         color: #2f855a;
       }
-      
+
       .modal-content h3 {
         margin: 0 0 16px;
         font-size: 16px;
         font-weight: 500;
         color: #9b2c2c;
       }
-      
+
       .modal-content pre {
         background-color: #f1f5f9;
         padding: 12px;
@@ -336,7 +337,7 @@
         max-height: 300px;
         overflow-y: auto;
       }
-      
+
       @keyframes fadeIn {
         from {
           transform: scale(0.9);
@@ -347,7 +348,7 @@
           opacity: 1;
         }
       }
-      
+
       .close-btn {
         position: absolute;
         top: 12px;
@@ -360,46 +361,44 @@
         cursor: pointer;
         font-size: 14px;
       }
-      
+
       .close-btn:hover {
         background-color: #e2e8f0;
       }
-      
+
       /* Brand logo */
       .brand-logo {
         height: 100%;
         max-width: 100%;
         object-fit: contain;
       }
-      
+
       /* Responsive tweaks */
       @media (max-width: 768px) {
         body {
           padding: 80px 12px;
         }
-      
+
         form {
           padding: 16px;
           border-left: 3px solid #4299e1;
         }
-      
+
         h1 {
           font-size: 18px;
         }
-      
+
         .button-container {
           flex-direction: column;
           gap: 12px;
           align-items: stretch;
         }
-      
+
         button {
           width: 100%;
         }
       }
-      
-      </style>
-      
+    </style>
   </head>
   <body>
     <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
@@ -408,6 +407,7 @@
           <img
             src="https://ondc.org/assets/ondc-buyer-apps/images/digihaat.png"
             class="brand-logo"
+            alt="DigiHaat Logo"
           />
         </a>
         <button
@@ -421,10 +421,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="/isCancellable">Cancel Request</a>
@@ -487,104 +484,9 @@
           name="charge"
           rows="6"
           placeholder="Paste or edit your JSON here..."
+          required
         >
-        {
-          "transactionId": "2d074a8b-568d-447c-a394-e49f9cc42406",
-          "__v": 0,
-          "createdAt": {
-            "$date": "2025-04-29T07:58:55.915Z"
-          },
-          "history": [],
-          "quote": {
-            "itemsList": [
-              {
-                "itemId": "66bc5faf91c33645fda23b36",
-                "name": "Cheese Chaska",
-                "sellerPrice": 278.25,
-                "price": 278.25,
-                "tax": 13.25,
-                "sellerDiscount": 0,
-                "basePriceWithoutTax": 265,
-                "quantity": 1,
-                "parentItemId": null,
-                "basePrice": 278.25,
-                "discountedBasePrice": 278.25
-              },
-              {
-                "itemId": "66bc5faf91c33645fda23b63",
-                "name": "Cheese Maska",
-                "sellerPrice": 478.25,
-                "price": 478.25,
-                "tax": 13.25,
-                "sellerDiscount": 0,
-                "basePriceWithoutTax": 465,
-                "quantity": 2,
-                "parentItemId": null,
-                "basePrice": 478.25,
-                "discountedBasePrice": 478.25
-              },
-              {
-                "itemId": "66bc5faf91c33645fda23b66",
-                "name": "Cheesy cheese",
-                "sellerPrice": 378.25,
-                "price": 378.25,
-                "tax": 13.25,
-                "sellerDiscount": 0,
-                "basePriceWithoutTax": 365,
-                "quantity": 2,
-                "parentItemId": null,
-                "basePrice": 378.25,
-                "discountedBasePrice": 378.25
-              }
-            ],
-            "subsidyCriteriaCharge": null,
-            "distance": null,
-            "distanceType": "KM",
-            "platformFees": 2.54,
-            "subsidyCapping": null,
-            "transactionId": null,
-            "totalOrderValue": "1580.25",
-            "itemCost": 265,
-            "taxes": {
-              "itemTaxes": 13.25,
-              "platformFeesTax": 0.46
-            },
-            "sellerFees": {
-              "miscCharge": 0,
-              "packingCharge": 0,
-              "sellerDiscount": 0
-            },
-            "totalOrderValueAfterSubsidy": 1600.25,
-            "deliveryItemList": [
-              {
-                "baseCharge": 70,
-                "fulfillmentId": "WSD111",
-                "deliveryCharge": 70,
-                "digiHaatSubsidy": 0,
-                "snpDiscount": 0
-              }
-            ],
-            "combinedDeliveryItemList": {
-              "baseCharge": 70,
-              "fulfillmentId": "WSD111",
-              "deliveryCharge": 70,
-              "digiHaatSubsidy": 0,
-              "snpDiscount": 0
-            },
-            "offer": {},
-            "applySubsidy": false,
-            "subsidyCriteriaDistance": null,
-            "totalOrderValueAfterSubsidyBeforeCoupon": 1600.25,
-            "subsidy": 0,
-            "mov": 800.25,
-            "ONDC_FA": 0,
-            "totalProductDiscount": 0
-          },
-          "updatedAt": {
-            "$date": "2025-04-29T07:58:55.915Z"
-          }
-        }</textarea
-        >
+        </textarea>
       </label>
 
       <label
@@ -593,737 +495,9 @@
           name="on_cancelPayload"
           rows="20"
           placeholder="Paste or edit your JSON here..."
+          required
         >
-        {
-          "context": {
-            "domain": "ONDC:RET11",
-            "country": "IND",
-            "city": "std:080",
-            "action": "on_cancel",
-            "core_version": "1.2.0",
-            "bap_id": "buyer-app-preprod-v2.ondc.org",
-            "bap_uri": "https://ebd1f4bdd25f.ngrok.app/protocol/v1",
-            "bpp_uri": "https://preprod.tipplr.in/ondc/v2",
-            "transaction_id": "3683825f-862f-4d41-9fe0-12e564f61d8a",
-            "message_id": "5fc0cbbc-a918-46f6-b064-fbf73c05ec50",
-            "timestamp": "2025-05-09T13:39:22.695Z",
-            "bpp_id": "preprod.tipplr.in",
-            "ttl": "PT30S"
-          },
-          "message": {
-            "order": {
-              "id": "2025-04-23-000003",
-              "state": "Cancelled",
-              "provider": {
-                "id": "merchant-167714647372249847",
-                "locations": [
-                  {
-                    "id": "merchant-167714647372249847"
-                  }
-                ]
-              },
-              "items": [
-                {
-                  "id": "66bc5faf91c33645fda23b36",
-                  "quantity": {
-                    "count": 0
-                  },
-                  "fulfillment_id": "F1",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXU"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b36",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C1",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXU"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b36:603230",
-                  "quantity": {
-                    "count": 0
-                  },
-                  "fulfillment_id": "F1",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXU"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b36:603230",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C1",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXU"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b63",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "F2",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXA"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b63",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C2",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXA"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b63:603230",
-                  "quantity": {
-                    "count": 0
-                  },
-                  "fulfillment_id": "F2",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXA"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b63:603230",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C2",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXA"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b66",
-                  "quantity": {
-                    "count": 0
-                  },
-                  "fulfillment_id": "F3",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXX"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b66",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C3",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXX"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b66:603230",
-                  "quantity": {
-                    "count": 0
-                  },
-                  "fulfillment_id": "F3",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXx"
-                },
-                {
-                  "id": "66bc5faf91c33645fda23b66:603230",
-                  "quantity": {
-                    "count": 1
-                  },
-                  "fulfillment_id": "C3",
-                  "tags": [
-                    {
-                      "code": "type",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "customization"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "parent",
-                      "list": [
-                        {
-                          "code": "id",
-                          "value": "69469611"
-                        }
-                      ]
-                    }
-                  ],
-                  "parent_item_id": "pi8+mpRMDJXX"
-                }
-              ],
-              "quote": {
-                "price": {
-                  "currency": "INR",
-                  "value": "0.00"
-                },
-                "breakup": [
-                  {
-                    "@ondc/org/item_id": "food_item-170383210588937185",
-                    "@ondc/org/item_quantity": {
-                      "count": 0
-                    },
-                    "title": "Chicken pizza",
-                    "@ondc/org/title_type": "item",
-                    "price": {
-                      "currency": "INR",
-                      "value": "0"
-                    },
-                    "item": {
-                      "price": {
-                        "currency": "INR",
-                        "value": "0"
-                      },
-                      "parent_item_id": "pi8+mpRMDJXU",
-                      "tags": [
-                        {
-                          "code": "type",
-                          "list": [
-                            {
-                              "code": "type",
-                              "value": "item"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "food_item-170383210588937185:603230",
-                    "@ondc/org/item_quantity": {
-                      "count": 0
-                    },
-                    "title": "Regular",
-                    "@ondc/org/title_type": "item",
-                    "price": {
-                      "currency": "INR",
-                      "value": "0"
-                    },
-                    "item": {
-                      "price": {
-                        "currency": "INR",
-                        "value": "400"
-                      },
-                      "tags": [
-                        {
-                          "code": "type",
-                          "list": [
-                            {
-                              "code": "type",
-                              "value": "customization"
-                            }
-                          ]
-                        },
-                        {
-                          "code": "parent",
-                          "list": [
-                            {
-                              "code": "id",
-                              "value": "69469611"
-                            }
-                          ]
-                        }
-                      ],
-                      "parent_item_id": "pi8+mpRMDJXU"
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "food_item-170383210588937185:603230",
-                    "title": "Tax",
-                    "@ondc/org/title_type": "tax",
-                    "price": {
-                      "currency": "INR",
-                      "value": "0"
-                    },
-                    "item": {
-                      "parent_item_id": "pi8+mpRMDJXU",
-                      "tags": [
-                        {
-                          "code": "type",
-                          "list": [
-                            {
-                              "code": "type",
-                              "value": "customization"
-                            }
-                          ]
-                        },
-                        {
-                          "code": "parent",
-                          "list": [
-                            {
-                              "code": "id",
-                              "value": "69469611"
-                            }
-                          ]
-                        }
-                      ],
-                      "price": {
-                        "currency": "INR",
-                        "value": "0"
-                      }
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "F1",
-                    "title": "Delivery charges",
-                    "@ondc/org/title_type": "delivery",
-                    "price": {
-                      "currency": "INR",
-                      "value": "0"
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "F1",
-                    "title": "ONDC_FA",
-                    "@ondc/org/title_type": "discount",
-                    "price": {
-                      "currency": "INR",
-                      "value": "-10"
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "F2",
-                    "title": "ONDC_FA",
-                    "@ondc/org/title_type": "discount",
-                    "price": {
-                      "currency": "INR",
-                      "value": "-20"
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "F3",
-                    "title": "ONDC_FA",
-                    "@ondc/org/title_type": "discount",
-                    "price": {
-                      "currency": "INR",
-                      "value": "-30"
-                    }
-                  },
-                  {
-                    "@ondc/org/item_id": "F1",
-                    "title": "Convenience Fee",
-                    "@ondc/org/title_type": "misc",
-                    "price": {
-                      "currency": "INR",
-                      "value": "0"
-                    }
-                  }
-                ],
-                "ttl": "PT1H"
-              },
-              "billing": {
-                "address": {
-                  "name": "akshay",
-                  "building": "jvh",
-                  "locality": "80 Feet Ring Road, Prakash Nagar",
-                  "city": "Bengaluru",
-                  "state": "Karnataka",
-                  "country": "IND",
-                  "area_code": "560021"
-                },
-                "phone": "8983796135",
-                "name": "akshay",
-                "email": "devasakshay@gmail.com",
-                "created_at": "2025-04-23T15:57:35.906Z",
-                "updated_at": "2025-04-23T15:57:35.906Z"
-              },
-              "payment": {
-                "uri": "https://razorpay.com/",
-                "tl_method": "http/get",
-                "params": {
-                  "amount": "452.50",
-                  "currency": "INR",
-                  "transaction_id": "order_QMYZ6F1by4YKvz"
-                },
-                "status": "PAID",
-                "type": "ON-ORDER",
-                "collected_by": "BAP",
-                "@ondc/org/buyer_app_finder_fee_type": "percent",
-                "@ondc/org/buyer_app_finder_fee_amount": "3",
-                "@ondc/org/settlement_details": [
-                  {
-                    "settlement_counterparty": "seller-app",
-                    "settlement_phase": "sale-amount",
-                    "settlement_type": "neft",
-                    "settlement_bank_account_no": "50200053531451",
-                    "settlement_ifsc_code": "HDFC0004051",
-                    "beneficiary_name": "FOOD SPACE TECHNOLOGY PRIVATE LIMITED",
-                    "bank_name": "HDFC Bank",
-                    "branch_name": "CNN"
-                  }
-                ]
-              },
-              "fulfillments": [
-                {
-                  "@ondc/org/TAT": "PT60M",
-                  "id": "F1",
-                  "tracking": true,
-                  "end": {
-                    "contact": {
-                      "phone": "8983796135"
-                    },
-                    "person": {
-                      "name": "akshay"
-                    },
-                    "location": {
-                      "gps": "12.993773,77.555901",
-                      "address": {
-                        "name": "akshay",
-                        "building": "jvh",
-                        "locality": "80 Feet Ring Road, Prakash Nagar",
-                        "city": "Bengaluru",
-                        "state": "Karnataka",
-                        "country": "IND",
-                        "area_code": "560021"
-                      }
-                    },
-                    "time": {
-                      "range": {
-                        "start": "2025-04-23T16:11:57.228Z",
-                        "end": "2025-04-23T16:41:57.228Z"
-                      }
-                    }
-                  },
-                  "type": "Delivery",
-                  "start": {
-                    "location": {
-                      "id": "merchant-167714647372249847",
-                      "descriptor": {
-                        "name": "Tipplr-swathi d"
-                      },
-                      "gps": "12.979361,77.589344",
-                      "address": {
-                        "city": "bengaluru",
-                        "area_code": "560001",
-                        "locality": "Vasanth Nagar",
-                        "state": "KA"
-                      }
-                    },
-                    "time": {
-                      "range": {
-                        "start": "2025-04-23T16:01:57.228Z",
-                        "end": "2025-04-23T16:11:57.228Z"
-                      }
-                    },
-                    "contact": {
-                      "phone": "9844444444",
-                      "email": "support@tipplr.in"
-                    }
-                  },
-                  "@ondc/org/provider_name": "TIPPLR_DELIVERY",
-                  "state": {
-                    "descriptor": {
-                      "code": "Cancelled"
-                    }
-                  },
-                  "tags": [
-                    {
-                      "code": "cancel_request",
-                      "list": [
-                        {
-                          "code": "reason_id",
-                          "value": "001"
-                        },
-                        {
-                          "code": "initiated_by",
-                          "value": "buyer-app-preprod-v2.ondc.org"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "precancel_state",
-                      "list": [
-                        {
-                          "code": "fulfillment_state",
-                          "value": "Pending"
-                        },
-                        {
-                          "code": "updated_at",
-                          "value": "2025-04-23T15:57:57.228Z"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "id": "C1",
-                  "state": {
-                    "descriptor": {
-                      "code": "Cancelled"
-                    }
-                  },
-                  "type": "Cancel",
-                  "tags": [
-                    {
-                      "code": "quote_trail",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "item"
-                        },
-                        {
-                          "code": "id",
-                          "value": "food_item-170383210588937185:603230"
-                        },
-                        {
-                          "code": "subtype",
-                          "value": "customization"
-                        },
-                        {
-                          "code": "currency",
-                          "value": "INR"
-                        },
-                        {
-                          "code": "value",
-                          "value": "-344"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "quote_trail",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "tax"
-                        },
-                        {
-                          "code": "id",
-                          "value": "food_item-170383210588937185:603230"
-                        },
-                        {
-                          "code": "subtype",
-                          "value": "customization"
-                        },
-                        {
-                          "code": "currency",
-                          "value": "INR"
-                        },
-                        {
-                          "code": "value",
-                          "value": "-20.00"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "quote_trail",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "delivery"
-                        },
-                        {
-                          "code": "id",
-                          "value": "F1"
-                        },
-                        {
-                          "code": "subtype",
-                          "value": "item"
-                        },
-                        {
-                          "code": "currency",
-                          "value": "INR"
-                        },
-                        {
-                          "code": "value",
-                          "value": "-78"
-                        }
-                      ]
-                    },
-                    {
-                      "code": "quote_trail",
-                      "list": [
-                        {
-                          "code": "type",
-                          "value": "misc"
-                        },
-                        {
-                          "code": "id",
-                          "value": "F1"
-                        },
-                        {
-                          "code": "subtype",
-                          "value": "item"
-                        },
-                        {
-                          "code": "currency",
-                          "value": "INR"
-                        },
-                        {
-                          "code": "value",
-                          "value": "-10.50"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ],
-              "cancellation": {
-                "cancelled_by": "buyer-app-preprod-v2.ondc.org",
-                "reason": {
-                  "id": "001"
-                }
-              },
-              "created_at": "2025-04-23T15:57:54.669Z",
-              "updated_at": "2025-05-09T13:39:22.695Z"
-            }
-          }
-        }
-      </textarea
-        >
+        </textarea>
       </label>
 
       <label
@@ -1332,45 +506,10 @@
           name="refundFL"
           rows="20"
           placeholder="Paste or edit your JSON here..."
+          required
         >
-        [
-  {
-    "_id": "bc2bb560-de79-492e-9208-74f7baa7ce64",
-    "amount": 168,
-    "orderId": "order_QTv7JcUUVNX2fp",
-    "status": "pending",
-    "reason": "Dangling order state",
-    "refundId": "bc2bb560-de79-492e-9208-74f7baa7ce64",
-    "speed": "optimum",
-    "refundJson": {
-      "acquirer_data": {
-        "rrn": null
-      },
-      "amount": 16800,
-      "base_amount": 16800,
-      "batch_id": null,
-      "created_at": 1747032637,
-      "currency": "INR",
-      "entity": "refund",
-      "id": "rfnd_QTvOV6CEw6lAip",
-      "notes": {
-        "notes_key_1": "system generated refund"
-      },
-      "payment_id": "pay_QTv7Xph6PkUaOs",
-      "receipt": "bc2bb560-de79-492e-9208-74f7baa7ce64",
-      "speed_processed": "instant",
-      "speed_requested": "optimum",
-      "status": "pending"
-    },
-    "flId": "C1",
-    "transactionId": "de2064e1-4a09-41c4-9120-6832e5aba337",
-    "createdAt": "2025-05-12T06:50:38.118Z",
-    "updatedAt": "2025-05-12T06:50:38.118Z",
-    "__v": 0
-  }
-]
-      
-      </textarea>
+[]
+        </textarea>
       </label>
 
       <div class="button-container">
@@ -1387,6 +526,7 @@
         <pre id="refundResult"></pre>
       </div>
     </div>
+    <!-- Modal for Error -->
     <div class="modal" id="errorModal">
       <div class="modal-content error">
         <button class="close-btn" onclick="closeModal()">Close</button>
@@ -1396,30 +536,35 @@
 
     <script>
       function closeModal() {
-        document.querySelectorAll(".modal").forEach((modal) => {
-          modal.style.display = "none";
+        console.log('Closing modal');
+        document.querySelectorAll('.modal').forEach((modal) => {
+          modal.style.display = 'none';
         });
       }
 
       window.onclick = function (event) {
-        document.querySelectorAll(".modal").forEach((modal) => {
+        document.querySelectorAll('.modal').forEach((modal) => {
           if (event.target === modal) {
-            modal.style.display = "none";
+            console.log('Modal closed by clicking outside');
+            modal.style.display = 'none';
           }
         });
       };
 
       function resetForm() {
-        document.getElementById("refundForm").reset();
-        document.getElementById("resultModal").style.display = "none";
-        document.getElementById("errorModal").style.display = "none";
-        localStorage.removeItem("formData");
-        localStorage.removeItem("refundResult");
-        localStorage.removeItem("errorMessage");
+        console.log('Resetting form');
+        document.getElementById('refundForm').reset();
+        document.getElementById('resultModal').style.display = 'none';
+        document.getElementById('errorModal').style.display = 'none';
+        localStorage.removeItem('formData');
+        localStorage.removeItem('refundResult');
+        localStorage.removeItem('errorMessage');
+        console.log('Form data and localStorage cleared');
       }
 
       // Save form data to localStorage on input change
-      document.getElementById("refundForm").addEventListener("input", function () {
+      document.getElementById('refundForm').addEventListener('input', function () {
+        console.log('Form input changed, saving to localStorage');
         const formData = {
           actor: document.querySelector("select[name='actor']").value,
           actionType: document.querySelector("select[name='actionType']").value,
@@ -1429,63 +574,125 @@
           on_cancelPayload: document.querySelector("textarea[name='on_cancelPayload']").value,
           refundFL: document.querySelector("textarea[name='refundFL']").value,
         };
-        localStorage.setItem("formData", JSON.stringify(formData));
+        localStorage.setItem('formData', JSON.stringify(formData));
+        console.log('Form data saved to localStorage:', formData);
       });
 
-      // Simulate form submission and display result/error in modal
-      document.getElementById("refundForm").addEventListener("submit", function (event) {
+      // Validate JSON string
+      function isValidJSON(str) {
+        try {
+          JSON.parse(str);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      // Handle form submission
+      document.getElementById('refundForm').addEventListener('submit', async function (event) {
         event.preventDefault();
+        console.log('Form submitted');
+
         const formData = {
           actor: document.querySelector("select[name='actor']").value,
           actionType: document.querySelector("select[name='actionType']").value,
           action: document.querySelector("select[name='action']").value,
           isETABreached: document.querySelector("input[name='isETABreached']").checked,
-          charge: document.querySelector("textarea[name='charge']").value,
-          on_cancelPayload: document.querySelector("textarea[name='on_cancelPayload']").value,
-          refundFL: document.querySelector("textarea[name='refundFL']").value,
+          charge: document.querySelector("textarea[name='charge']").value.trim(),
+          on_cancelPayload: document.querySelector("textarea[name='on_cancelPayload']").value.trim(),
+          refundFL: document.querySelector("textarea[name='refundFL']").value.trim(),
         };
 
-        // Simulate a refund calculation (replace with actual logic if available)
+        console.log('Collected form data:', formData);
+
         try {
-          const refundResult = { message: "Refund calculated successfully", amount: 452.50 }; // Placeholder
-          document.getElementById("refundResult").textContent = JSON.stringify(refundResult, null, 2);
-          document.getElementById("resultModal").style.display = "flex";
-          localStorage.setItem("refundResult", JSON.stringify(refundResult));
+          // Validate JSON fields
+          console.log('Validating JSON inputs');
+          if (!isValidJSON(formData.charge)) {
+            throw new Error('Invalid JSON format in Charge Payload');
+          }
+          if (!isValidJSON(formData.on_cancelPayload)) {
+            throw new Error('Invalid JSON format in on_cancelPayload');
+          }
+          if (!isValidJSON(formData.refundFL)) {
+            throw new Error('Invalid JSON format in refundFL');
+          }
+          console.log('All JSON inputs are valid');
+
+          // Send POST request to the backend
+          console.log('Sending POST request to /refund');
+          const response = await fetch('/refund', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+          });
+
+          console.log('Received response with status:', response.status);
+
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Server error:', response.status, errorText);
+            throw new Error(`Server error: ${response.status} ${errorText}`);
+          }
+
+          const refundResult = await response.json();
+          console.log('Received refund result:', refundResult);
+
+          // Display the result in the modal
+          document.getElementById('refundResult').textContent = JSON.stringify(refundResult, null, 2);
+          document.getElementById('resultModal').style.display = 'flex';
+          localStorage.setItem('refundResult', JSON.stringify(refundResult));
+          console.log('Refund result displayed and saved to localStorage');
         } catch (error) {
-          document.getElementById("errorMessage").textContent = error.message || "An error occurred";
-          document.getElementById("errorModal").style.display = "flex";
-          localStorage.setItem("errorMessage", error.message || "An error occurred");
+          console.error('Error during form submission:', error.message);
+          // Display error in the modal
+          document.getElementById('errorMessage').textContent =
+            error.message || 'An error occurred while communicating with the server';
+          document.getElementById('errorModal').style.display = 'flex';
+          localStorage.setItem('errorMessage', error.message || 'An error occurred while communicating with the server');
+          console.log('Error message displayed and saved to localStorage');
         }
       });
 
       // Load saved data from localStorage when the page loads
       window.onload = function () {
-        const savedFormData = localStorage.getItem("formData");
-        const savedRefundResult = localStorage.getItem("refundResult");
-        const savedErrorMessage = localStorage.getItem("errorMessage");
+        console.log('Page loaded, checking localStorage');
+        const savedFormData = localStorage.getItem('formData');
+        const savedRefundResult = localStorage.getItem('refundResult');
+        const savedErrorMessage = localStorage.getItem('errorMessage');
 
         if (savedFormData) {
+          console.log('Loading saved form data from localStorage');
           const formData = JSON.parse(savedFormData);
-          document.querySelector("select[name='actor']").value = formData.actor || "";
-          document.querySelector("select[name='actionType']").value = formData.actionType || "";
-          document.querySelector("select[name='action']").value = formData.action || "";
+          document.querySelector("select[name='actor']").value = formData.actor || '';
+          document.querySelector("select[name='actionType']").value = formData.actionType || '';
+          document.querySelector("select[name='action']").value = formData.action || '';
           document.querySelector("input[name='isETABreached']").checked = formData.isETABreached || false;
-          document.querySelector("textarea[name='charge']").value = formData.charge || "";
-          document.querySelector("textarea[name='on_cancelPayload']").value = formData.on_cancelPayload || "";
-          document.querySelector("textarea[name='refundFL']").value = formData.refundFL || "";
+          document.querySelector("textarea[name='charge']").value = formData.charge || '';
+          document.querySelector("textarea[name='on_cancelPayload']").value = formData.on_cancelPayload || '';
+          document.querySelector("textarea[name='refundFL']").value = formData.refundFL || '';
+          console.log('Form data restored:', formData);
         }
 
         if (savedRefundResult) {
-          document.getElementById("refundResult").textContent = JSON.stringify(JSON.parse(savedRefundResult), null, 2);
-          document.getElementById("resultModal").style.display = "flex";
+          console.log('Loading saved refund result from localStorage');
+          document.getElementById('refundResult').textContent = JSON.stringify(
+            JSON.parse(savedRefundResult),
+            null, 2
+          );
+          document.getElementById('resultModal').style.display = 'flex';
+          console.log('Refund result modal displayed');
         }
 
         if (savedErrorMessage) {
-          document.getElementById("errorMessage").textContent = savedErrorMessage;
-          document.getElementById("errorModal").style.display = "flex";
+          console.log('Loading saved error message from localStorage');
+          document.getElementById('errorMessage').textContent = savedErrorMessage;
+          document.getElementById('errorModal').style.display = 'flex';
+          console.log('Error modal displayed');
         }
       };
-
     </script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

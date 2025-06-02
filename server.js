@@ -17,7 +17,6 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 app.get("/", (_req, res) => {
   try {
     console.log("Rendering ETA check page...");
@@ -83,12 +82,20 @@ app.post("/eta-check", (req, res) => {
 
 // GET route to render refund input form
 app.get("/refund", (req, res) => {
-      console.log("Rendering refund page...");
-  res.render("refund", { refundResult: undefined, error: undefined });
+  console.log("GET /refund: Rendering refund page...");
+  try {
+    res.render("refund", { refundResult: undefined, error: undefined });
+    console.log("GET /refund: Refund page rendered successfully");
+  } catch (err) {
+    console.error("GET /refund: Error rendering refund page:", err.message, err.stack);
+    res.status(500).send("Internal Server Error");
+    console.log("GET /refund: Failed to render refund page");
+  }
 });
 
 // POST route to process refund
 app.post("/refund", (req, res) => {
+  console.log("POST /refund: Received refund request");
   try {
     const {
       actor,
@@ -100,23 +107,55 @@ app.post("/refund", (req, res) => {
       refundFL
     } = req.body;
 
+    console.log("POST /refund: Request body:", {
+      actor,
+      actionType,
+      action,
+      isETABreached,
+      charge: typeof charge, // Log type to verify JSON parsing
+      on_cancelPayload: typeof on_cancelPayload, // Log type to verify JSON parsing
+      refundFL: typeof refundFL // Log type to verify JSON parsing
+    });
+
+    // Log JSON parsing attempt
+    console.log("POST /refund: Parsing JSON inputs...");
+    const parsedCharge = JSON.parse(charge);
+    const parsedOnCancelPayload = JSON.parse(on_cancelPayload);
+    const parsedRefundFL = JSON.parse(refundFL);
+    console.log("POST /refund: JSON parsed successfully");
+
+    // Log refund calculation
+    console.log("POST /refund: Calculating refund with inputs:", {
+      actor,
+      actionType,
+      action,
+      isETABreached: isETABreached === "true",
+      charge: parsedCharge,
+      on_cancelPayload: parsedOnCancelPayload,
+      refundFL: parsedRefundFL
+    });
+
     const refundAmount = refund(
       actor,
       actionType,
       action,
       isETABreached === "true",
-      JSON.parse(charge),
-      JSON.parse(on_cancelPayload),
-      JSON.parse(refundFL)
+      parsedCharge,
+      parsedOnCancelPayload,
+      parsedRefundFL
     );
 
-    res.render("refund", { refundResult: refundAmount, error: undefined });
+    console.log("POST /refund: Refund calculated successfully:", refundAmount);
+
+    res.json({ refundResult: refundAmount });
+    console.log("POST /refund: Refund page rendered with result");
   } catch (err) {
-    console.error("Error calculating refund:", err);
+    console.error("POST /refund: Error calculating refund:", err.message, err.stack);
     res.render("refund", {
       refundResult: undefined,
       error: err.message,
     });
+    console.log("POST /refund: Refund page rendered with error:", err.message);
   }
 });
 
