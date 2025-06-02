@@ -83,6 +83,7 @@ app.post("/eta-check", (req, res) => {
 
 // GET route to render refund input form
 app.get("/refund", (req, res) => {
+      console.log("Rendering refund page...");
   res.render("refund", { refundResult: undefined, error: undefined });
 });
 
