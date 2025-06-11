@@ -137,68 +137,42 @@ app.get("/refund", (req, res) => {
 });
 
 // POST route to process refund
-app.post("/refund", (req, res) => {
-  console.log("POST /refund: Received refund request");
+app.post('/refund', async (req, res) => {
   try {
-    const {
+    const { actor, actionType, action, isETABreached, charge, on_cancelPayload, refundFL } = req.body;
+    console.log("🚀 ~ app.post ~ actor,", actor)
+
+    // Validate required fields
+    if (!actor || !actionType || !action || !charge || !on_cancelPayload || !refundFL) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Parse JSON strings to objects
+    let chargeObj, cancelPayloadObj, refundFLObj;
+    try {
+      chargeObj = JSON.parse(charge);
+      cancelPayloadObj = JSON.parse(on_cancelPayload);
+      refundFLObj = JSON.parse(refundFL);
+    } catch (error) {
+      return res.status(400).json({ error: 'Invalid JSON format in one or more payloads' });
+    }
+
+    // Call the refund function from ecom-ondc-order-sdk
+    const refundResult = await refund(
       actor,
       actionType,
       action,
       isETABreached,
-      charge,
-      on_cancelPayload,
-      refundFL
-    } = req.body;
-
-    console.log("POST /refund: Request body:", {
-      actor,
-      actionType,
-      action,
-      isETABreached,
-      charge: typeof charge, // Log type to verify JSON parsing
-      on_cancelPayload: typeof on_cancelPayload, // Log type to verify JSON parsing
-      refundFL: typeof refundFL // Log type to verify JSON parsing
-    });
-
-    // Log JSON parsing attempt
-    console.log("POST /refund: Parsing JSON inputs...");
-    const parsedCharge = JSON.parse(charge);
-    const parsedOnCancelPayload = JSON.parse(on_cancelPayload);
-    const parsedRefundFL = JSON.parse(refundFL);
-    console.log("POST /refund: JSON parsed successfully");
-
-    // Log refund calculation
-    console.log("POST /refund: Calculating refund with inputs:", {
-      actor,
-      actionType,
-      action,
-      isETABreached: isETABreached === "true",
-      charge: parsedCharge,
-      on_cancelPayload: parsedOnCancelPayload,
-      refundFL: parsedRefundFL
-    });
-
-    const refundAmount = refund(
-      actor,
-      actionType,
-      action,
-      isETABreached === "true",
-      parsedCharge,
-      parsedOnCancelPayload,
-      parsedRefundFL
+      chargeObj,
+      cancelPayloadObj,
+      refundFLObj,
     );
 
-    console.log("POST /refund: Refund calculated successfully:", refundAmount);
-
-    res.json({ refundResult: refundAmount });
-    console.log("POST /refund: Refund page rendered with result");
-  } catch (err) {
-    console.error("POST /refund: Error calculating refund:", err.message, err.stack);
-    res.render("refund", {
-      refundResult: undefined,
-      error: err.message,
-    });
-    console.log("POST /refund: Refund page rendered with error:", err.message);
+    // Send the result back to the frontend
+    res.status(200).json(refundResult);
+  } catch (error) {
+    console.error('Error processing refund:', error.message);
+    res.status(500).json({ error: error.message || 'Internal server error' });
   }
 });
 
