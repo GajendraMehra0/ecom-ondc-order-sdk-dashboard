@@ -77,6 +77,44 @@ app.post("/eta-check", (req, res) => {
     res.render("isETABreached", { result: `Error: ${err.message}` });
   }
 });
+app.get("/calculate-Eta", (req, res) => {
+  try {
+    console.log("Rendering calculate-Eta check page...");
+    res.render("calculate-Eta", { result: undefined });
+  } catch (err) {
+    console.error("Error rendering ETA check page:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Route to handle ETA breach form submission
+app.post("/calculate-Eta", (req, res) => {
+  try {
+    const { createdAt, domain, tat, stateCode } = req.body;
+
+    const data = {
+      createdAt: new Date(createdAt).toISOString(),
+      domain,
+      fulfillments: [
+        {
+          type: "Delivery",
+          "@ondc/org/TAT": tat,
+          state: {
+            descriptor: {
+              code: stateCode,
+            },
+          },
+        },
+      ],
+    };
+
+    const result = isETABreached(data);
+    res.render("isETABreached", { result: { isETABreached: result } });
+  } catch (err) {
+    console.error("Error processing ETA check:", err);
+    res.render("isETABreached", { result: `Error: ${err.message}` });
+  }
+});
 
 // ---------- NEW: Refund Route Starts Here ----------
 
