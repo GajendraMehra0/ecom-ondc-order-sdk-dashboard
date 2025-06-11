@@ -965,7 +965,7 @@
       } else {
         const currentTime = new Date();
         const isBreached = currentTime >= deliveryETA;
-        const etaDateString = deliveryETA.toLocaleString('en-IN', { 
+        const etaDateString = deliveryETA.toISOString('en-IN', { 
           timeZone: 'Asia/Kolkata', 
           dateStyle: 'medium', 
           timeStyle: 'short' 
