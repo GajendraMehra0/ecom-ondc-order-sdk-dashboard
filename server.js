@@ -67,31 +67,20 @@ app.get("/eta-check", (req, res) => {
 });
 
 // Route to handle ETA breach form submission
-app.post("/eta-check", (req, res) => {
+app.post('/check-eta', (req, res) => {
   try {
-    const { createdAt, domain, tat, stateCode } = req.body;
-
-    const data = {
-      createdAt: new Date(createdAt).toISOString(),
-      domain,
-      fulfillments: [
-        {
-          type: "Delivery",
-          "@ondc/org/TAT": tat,
-          state: {
-            descriptor: {
-              code: stateCode,
-            },
-          },
-        },
-      ],
-    };
-
+    const data = req.body;
+    if (!data || typeof data !== 'object') {
+      return res.status(400).json({ error: 'Invalid JSON payload' });
+    }
     const result = isETABreached(data);
-    res.render("isETABreached", { result: { isETABreached: result } });
-  } catch (err) {
-    console.error("Error processing ETA check:", err);
-    res.render("isETABreached", { result: `Error: ${err.message}` });
+    res.json({
+      success: true,
+      breached: result,
+      message: result ? 'ETA Breached' : 'ETA Not Breached'
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error', details: error.message });
   }
 });
 
