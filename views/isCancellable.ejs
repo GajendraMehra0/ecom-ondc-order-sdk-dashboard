@@ -16,13 +16,12 @@
       color: #333;
       margin: 0;
       padding: 40px 20px;
-      padding-top: 100px; /* Adjusted for fixed navbar */
+      padding-top: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
   
-    /* Navbar Styles */
     .navbar {
       background-color: #ffffff;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -147,7 +146,6 @@
       }
     }
   </style>
-  
 </head>
 <body>
   <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
@@ -193,7 +191,7 @@
   <h1>Check if Order is Cancellable</h1>
   
   <p>Paste your JSON payload below:</p>
-  <textarea id="jsonInput">
+ <textarea id="jsonInput">
     {
       "_id": "680a4128fc1b82b2f4c28dd1",
       "provider": {
@@ -879,7 +877,6 @@
     }
   
   </textarea>
-
   <div>
     <button onclick="checkCancellable()">Check</button>
     <button onclick="resetForm()">Reset</button>
@@ -888,49 +885,11 @@
   <div id="result"></div>
 
   <script>
-    const notCancellableState = ["Order-delivered", "Order-picked-up"];
-
-    const isCancellable = (data) => {
-      if (!data || typeof data !== "object" || Array.isArray(data)) {
-        return false;
-      }
-
-      if (!data.confirmedItems || !Array.isArray(data.confirmedItems)) {
-        return false;
-      }
-
-      if (data.confirmedItems.length === 0) {
-        return false;
-      }
-
-      const deliveryFulfillment = data?.fulfillments?.find(
-        (fulfillment) => fulfillment?.type === "Delivery"
-      );
-      if (notCancellableState.includes(deliveryFulfillment?.state?.descriptor?.code)) {
-        return false;
-      }
-
-      return data.confirmedItems.every((item) => {
-        if (!item || typeof item !== "object" || Array.isArray(item)) {
-          return false;
-        }
-
-        if (
-          !item.product ||
-          typeof item.product !== "object" ||
-          Array.isArray(item.product)
-        ) {
-          return false;
-        }
-
-        return item.product["@ondc/org/cancellable"] === true;
-      });
-    };
-
-    function checkCancellable() {
+    async function checkCancellable() {
       const input = document.getElementById("jsonInput").value;
       let data;
 
+      // Validate JSON
       try {
         data = JSON.parse(input);
       } catch (err) {
@@ -940,13 +899,35 @@
         return;
       }
 
-      const result = isCancellable(data);
-      const resultText = result
-        ? "✅ The order is cancellable"
-        : "❌ The order is NOT cancellable";
-      document.getElementById("result").innerText = resultText;
-      localStorage.setItem("result", resultText);
-      localStorage.setItem("jsonInput", input);
+      // Send payload to backend
+      try {
+        const response = await fetch('/isCancellable', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          const resultText = result.cancellable
+            ? "✅ The order is cancellable"
+            : "❌ The order is NOT cancellable";
+          document.getElementById("result").innerText = resultText;
+          localStorage.setItem("result", resultText);
+          localStorage.setItem("jsonInput", input);
+        } else {
+          const resultText = `❌ Error: ${result.error}`;
+          document.getElementById("result").innerText = resultText;
+          localStorage.setItem("result", resultText);
+        }
+      } catch (error) {
+        const resultText = `❌ Network error: ${error.message}`;
+        document.getElementById("result").innerText = resultText;
+        localStorage.setItem("result", resultText);
+      }
     }
 
     function resetForm() {

@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import {isETABreached, calculateEtaTime} from "ecom-ondc-order-sdk"
+import {isETABreached, calculateEtaTime, isCancellable} from "ecom-ondc-order-sdk"
 import { refund } from "ecom-ondc-order-sdk"
 
 const app = express();
@@ -38,6 +38,23 @@ app.get("/isCancellable", (req, res) => {
   }
 });
 
+app.post('/isCancellable', async (req, res) => {
+  try {
+    const orderData = req.body;
+    const result = isCancellable(orderData);
+    res.status(200).json({
+      cancellable: result,
+      message: result ? 'The order is cancellable' : 'The order is NOT cancellable',
+    });
+  } catch (error) {
+    console.error('Error checking cancellability:', error);
+    res.status(400).json({
+      error: 'Invalid JSON format or processing error',
+      details: error.message,
+    });
+  }
+});
+
 // Route to render ETA breach form
 app.get("/eta-check", (req, res) => {
   try {
@@ -45,7 +62,7 @@ app.get("/eta-check", (req, res) => {
     res.render("isETABreached", { result: undefined });
   } catch (err) {
     console.error("Error rendering ETA check page:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error ");
   }
 });
 
