@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <style>
+      /* [Previous styles remain unchanged] */
       /* Navbar */
       .custom-navbar {
         background-color: #ffffff;
@@ -267,7 +268,7 @@
         font-size: 12px;
         background-color: #f1f5f9;
         padding: 10px;
-        border: 1px dashed #cbd5e0; /* Fixed border color */
+        border: 1px dashed #cbd5e0;
         border-radius: 6px;
         white-space: pre-wrap;
         word-break: break-word;
@@ -433,8 +434,8 @@
               <a class="nav-link" href="/eta-check">ETA-Breached</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="/calculate-Eta">Calculate ETA Time</a>
-          </li>
+              <a class="nav-link" href="/calculate-Eta">Calculate ETA Time</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -442,8 +443,8 @@
 
     <h1>CHECK YOUR REFUND AMOUNT</h1>
     <form action="/refund" method="POST" id="refundForm">
-      <label
-        >Actor *
+      <label>
+        Actor *
         <select name="actor" required>
           <option value="">Select...</option>
           <option value="Buyer">Buyer</option>
@@ -451,8 +452,8 @@
         </select>
       </label>
 
-      <label
-        >Action Type *
+      <label>
+        Action Type *
         <select name="actionType" required>
           <option value="">Select...</option>
           <option value="full">Full</option>
@@ -460,8 +461,8 @@
         </select>
       </label>
 
-      <label
-        >Action *
+      <label>
+        Action *
         <select name="action" required>
           <option value="">Select...</option>
           <option value="return">Return</option>
@@ -469,8 +470,8 @@
         </select>
       </label>
 
-      <label
-        >Is ETA Breached *
+      <label>
+        Is ETA Breached *
         <div class="toggle-container">
           <span class="toggle-label">False</span>
           <label class="toggle-switch">
@@ -481,38 +482,35 @@
         </div>
       </label>
 
-      <label
-        >Charge Payload (JSON) *
+      <label>
+        Charge Payload (JSON) *
         <textarea
           name="charge"
           rows="6"
           placeholder="Paste or edit your JSON here..."
           required
-        >
-        </textarea>
+        ></textarea>
       </label>
 
-      <label
-        >on_cancelPayload (JSON) *
+      <label>
+        on_cancelPayload (JSON) *
         <textarea
           name="on_cancelPayload"
           rows="20"
           placeholder="Paste or edit your JSON here..."
           required
-        >
-        </textarea>
+        ></textarea>
       </label>
 
-      <label
-        >refund FL (JSON) *
+      <label>
+        refund FL (JSON) *
         <textarea
           name="refundFL"
           rows="20"
           placeholder="Paste or edit your JSON here..."
           required
         >
-[]
-        </textarea>
+[]</textarea>
       </label>
 
       <div class="button-container">
@@ -539,7 +537,6 @@
 
     <script>
       function closeModal() {
-        console.log('Closing modal');
         document.querySelectorAll('.modal').forEach((modal) => {
           modal.style.display = 'none';
         });
@@ -548,26 +545,22 @@
       window.onclick = function (event) {
         document.querySelectorAll('.modal').forEach((modal) => {
           if (event.target === modal) {
-            console.log('Modal closed by clicking outside');
             modal.style.display = 'none';
           }
         });
       };
 
       function resetForm() {
-        console.log('Resetting form');
         document.getElementById('refundForm').reset();
         document.getElementById('resultModal').style.display = 'none';
         document.getElementById('errorModal').style.display = 'none';
         localStorage.removeItem('formData');
         localStorage.removeItem('refundResult');
         localStorage.removeItem('errorMessage');
-        console.log('Form data and localStorage cleared');
       }
 
       // Save form data to localStorage on input change
       document.getElementById('refundForm').addEventListener('input', function () {
-        console.log('Form input changed, saving to localStorage');
         const formData = {
           actor: document.querySelector("select[name='actor']").value,
           actionType: document.querySelector("select[name='actionType']").value,
@@ -578,7 +571,6 @@
           refundFL: document.querySelector("textarea[name='refundFL']").value,
         };
         localStorage.setItem('formData', JSON.stringify(formData));
-        console.log('Form data saved to localStorage:', formData);
       });
 
       // Validate JSON string
@@ -594,7 +586,6 @@
       // Handle form submission
       document.getElementById('refundForm').addEventListener('submit', async function (event) {
         event.preventDefault();
-        console.log('Form submitted');
 
         const formData = {
           actor: document.querySelector("select[name='actor']").value,
@@ -606,24 +597,28 @@
           refundFL: document.querySelector("textarea[name='refundFL']").value.trim(),
         };
 
-        console.log('Collected form data:', formData);
+        // Validate JSON fields
+        if (!isValidJSON(formData.charge)) {
+          document.getElementById('errorMessage').textContent = 'Invalid JSON format in Charge Payload';
+          document.getElementById('errorModal').style.display = 'flex';
+          localStorage.setItem('errorMessage', 'Invalid JSON format in Charge Payload');
+          return;
+        }
+        if (!isValidJSON(formData.on_cancelPayload)) {
+          document.getElementById('errorMessage').textContent = 'Invalid JSON format in on_cancelPayload';
+          document.getElementById('errorModal').style.display = 'flex';
+          localStorage.setItem('errorMessage', 'Invalid JSON format in on_cancelPayload');
+          return;
+        }
+        if (!isValidJSON(formData.refundFL)) {
+          document.getElementById('errorMessage').textContent = 'Invalid JSON format in refundFL';
+          document.getElementById('errorModal').style.display = 'flex';
+          localStorage.setItem('errorMessage', 'Invalid JSON format in refundFL');
+          return;
+        }
 
         try {
-          // Validate JSON fields
-          console.log('Validating JSON inputs');
-          if (!isValidJSON(formData.charge)) {
-            throw new Error('Invalid JSON format in Charge Payload');
-          }
-          if (!isValidJSON(formData.on_cancelPayload)) {
-            throw new Error('Invalid JSON format in on_cancelPayload');
-          }
-          if (!isValidJSON(formData.refundFL)) {
-            throw new Error('Invalid JSON format in refundFL');
-          }
-          console.log('All JSON inputs are valid');
-
           // Send POST request to the backend
-          console.log('Sending POST request to /refund');
           const response = await fetch('/refund', {
             method: 'POST',
             headers: {
@@ -632,42 +627,30 @@
             body: JSON.stringify(formData),
           });
 
-          console.log('Received response with status:', response.status);
-
           if (!response.ok) {
             const errorText = await response.text();
-            console.error('Server error:', response.status, errorText);
-            throw new Error(`Server error: ${response.status} ${errorText}`);
+            throw new Error(`Server error: ${errorText}`);
           }
 
           const refundResult = await response.json();
-          console.log('Received refund result:', refundResult);
-
-          // Display the result in the modal
           document.getElementById('refundResult').textContent = JSON.stringify(refundResult, null, 2);
           document.getElementById('resultModal').style.display = 'flex';
           localStorage.setItem('refundResult', JSON.stringify(refundResult));
-          console.log('Refund result displayed and saved to localStorage');
         } catch (error) {
-          console.error('Error during form submission:', error.message);
-          // Display error in the modal
           document.getElementById('errorMessage').textContent =
             error.message || 'An error occurred while communicating with the server';
           document.getElementById('errorModal').style.display = 'flex';
           localStorage.setItem('errorMessage', error.message || 'An error occurred while communicating with the server');
-          console.log('Error message displayed and saved to localStorage');
         }
       });
 
       // Load saved data from localStorage when the page loads
       window.onload = function () {
-        console.log('Page loaded, checking localStorage');
         const savedFormData = localStorage.getItem('formData');
         const savedRefundResult = localStorage.getItem('refundResult');
         const savedErrorMessage = localStorage.getItem('errorMessage');
 
         if (savedFormData) {
-          console.log('Loading saved form data from localStorage');
           const formData = JSON.parse(savedFormData);
           document.querySelector("select[name='actor']").value = formData.actor || '';
           document.querySelector("select[name='actionType']").value = formData.actionType || '';
@@ -676,24 +659,19 @@
           document.querySelector("textarea[name='charge']").value = formData.charge || '';
           document.querySelector("textarea[name='on_cancelPayload']").value = formData.on_cancelPayload || '';
           document.querySelector("textarea[name='refundFL']").value = formData.refundFL || '';
-          console.log('Form data restored:', formData);
         }
 
         if (savedRefundResult) {
-          console.log('Loading saved refund result from localStorage');
-          document.getElementById('refundResult').textContent = JSON.stringify(
+          document.getElementById('reefumdResult').textContent = JSON.stringify(
             JSON.parse(savedRefundResult),
             null, 2
           );
           document.getElementById('resultModal').style.display = 'flex';
-          console.log('Refund result modal displayed');
         }
 
         if (savedErrorMessage) {
-          console.log('Loading saved error message from localStorage');
           document.getElementById('errorMessage').textContent = savedErrorMessage;
           document.getElementById('errorModal').style.display = 'flex';
-          console.log('Error modal displayed');
         }
       };
     </script>
