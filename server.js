@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import {isETABreached} from "ecom-ondc-order-sdk"
+import {isETABreached, calculateEtaTime} from "ecom-ondc-order-sdk"
 import { refund } from "ecom-ondc-order-sdk"
 
 const app = express();
@@ -77,6 +77,7 @@ app.post("/eta-check", (req, res) => {
     res.render("isETABreached", { result: `Error: ${err.message}` });
   }
 });
+
 app.get("/calculate-Eta", (req, res) => {
   try {
     console.log("Rendering calculate-Eta check page...");
@@ -88,31 +89,18 @@ app.get("/calculate-Eta", (req, res) => {
 });
 
 // Route to handle ETA breach form submission
-app.post("/calculate-Eta", (req, res) => {
+app.post('/calculate-eta', (req, res) => {
   try {
-    const { createdAt, domain, tat, stateCode } = req.body;
-
-    const data = {
-      createdAt: new Date(createdAt).toISOString(),
-      domain,
-      fulfillments: [
-        {
-          type: "Delivery",
-          "@ondc/org/TAT": tat,
-          state: {
-            descriptor: {
-              code: stateCode,
-            },
-          },
-        },
-      ],
-    };
-
-    const result = isETABreached(data);
-    res.render("isETABreached", { result: { isETABreached: result } });
-  } catch (err) {
-    console.error("Error processing ETA check:", err);
-    res.render("isETABreached", { result: `Error: ${err.message}` });
+    const data = req.body;
+    console.log('body') // JSON payload from frontend
+    const deliveryETA = calculateEtaTime(data); // Call the function from eta.js
+    if (!deliveryETA) {
+      return res.status(400).json({ error: 'Invalid delivery data' });
+    }
+    res.json({ eta: deliveryETA.toISOString() }); // Return ETA as ISO string
+  } catch (error) {
+    console.error('Error calculating ETA:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
