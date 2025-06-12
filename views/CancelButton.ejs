@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Cancellation Eligibility</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 40px 20px;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        .navbar-brand {
+            color: #0056b3 !important;
+            font-weight: 600;
+            font-size: 1.5rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-logo {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-nav .nav-link {
+            color: #0056b3 !important;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+            background-color: #007bff;
+        }
+
+        h1 {
+            color: #222;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        textarea, select {
+            width: 100%;
+            max-width: 800px;
+            padding: 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        textarea {
+            height: 300px;
+            resize: vertical;
+        }
+
+        select {
+            height: 40px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .failure {
+            color: red;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 10px 20px;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 10px;
+                width: 100%;
+            }
+
+            textarea {
+                height: 250px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://ondc.org/assets/ondc-buyer-apps/images/digihaat.png" class="brand-logo" alt="DigiHaat Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/isCancellable">Cancel Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/refund">Refund Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/eta-check">ETA-Breached</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/calculate-Eta">Calculate ETA Time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cancelButton">Cancel Button Time</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <h1>Check Cancellation Eligibility</h1>
+    <p>Select actor and paste your JSON payload below:</p>
+    <select id="actor" name="actor" required>
+        <option value="" disabled selected>Select Actor</option>
+        <option value="buyer">Buyer</option>
+        <option value="agent">Agent</option>
+        <option value="opsLead">Ops Lead</option>
+    </select>
+    <textarea id="payload" placeholder='Enter JSON payload, e.g., {"domain":"ONDC:RET12","createdAt":"2025-06-12T10:00:00Z","fulfillments":[{"type":"Delivery","@ondc/org/TAT":"PT2H"}],"confirmedItems":[{"product":{"@ondc/org/cancellable":true},"@ondc/org/cancellable":true}]}'></textarea>
+    <div>
+        <button onclick="checkCancellation()">Check</button>
+        <button onclick="resetForm()">Reset</button>
+    </div>
+    <div id="result"></div>
+
+    <script>
+        async function checkCancellation() {
+            const actor = document.getElementById("actor").value;
+            const payloadInput = document.getElementById("payload").value;
+            let payload;
+
+            // Validate inputs
+            if (!actor) {
+                const resultText = "❌ Please select an actor.";
+                document.getElementById("result").innerText = resultText;
+                document.getElementById("result").className = "failure";
+                localStorage.setItem("result", resultText);
+                localStorage.setItem("resultClass", "failure");
+                return;
+            }
+
+            try {
+                payload = JSON.parse(payloadInput);
+            } catch (err) {
+                const resultText = "❌ Invalid JSON format.";
+                document.getElementById("result").innerText = resultText;
+                document.getElementById("result").className = "failure";
+                localStorage.setItem("result", resultText);
+                localStorage.setItem("resultClass", "failure");
+                return;
+            }
+
+            // Send data to backend
+            try {
+                const response = await fetch('/cancelButton', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ actor, payload })
+                });
+
+                const result = await response.json();
+                console.log('Backend response:', result); // Debug the response
+
+                if (response.ok) {
+                    const shouldShow = result.shouldShow === 'true' || result.shouldShow === true;
+                    const resultText = shouldShow ? `✅ Cancel button can be shown.` : `❌ Cancel button cannot be shown.`;
+                    const resultClass = shouldShow ? "success" : "failure";
+                    console.log('Setting result:', { resultText, resultClass, shouldShow }); // Debug DOM update
+                    document.getElementById("result").innerText = resultText;
+                    document.getElementById("result").className = resultClass;
+                    localStorage.setItem("result", resultText);
+                    localStorage.setItem("resultClass", resultClass);
+                    localStorage.setItem("actor", actor);
+                    localStorage.setItem("payload", payloadInput);
+                } else {
+                    const resultText = `❌ Error: ${result.error}`;
+                    console.log('Error response:', resultText); // Debug error
+                    document.getElementById("result").innerText = resultText;
+                    document.getElementById("result").className = "failure";
+                    localStorage.setItem("result", resultText);
+                    localStorage.setItem("resultClass", "failure");
+                }
+            } catch (error) {
+                const resultText = `❌ Network error: ${error.message}`;
+                console.log('Network error:', resultText); // Debug network error
+                document.getElementById("result").innerText = resultText;
+                document.getElementById("result").className = "failure";
+                localStorage.setItem("result", resultText);
+                localStorage.setItem("resultClass", "failure");
+            }
+        }
+
+        function resetForm() {
+            document.getElementById("actor").value = "";
+            document.getElementById("payload").value = "";
+            document.getElementById("result").innerText = "";
+            document.getElementById("result").className = "";
+            localStorage.removeItem("actor");
+            localStorage.removeItem("payload");
+            localStorage.removeItem("result");
+            localStorage.removeItem("resultClass");
+            console.log('Form reset, localStorage cleared'); // Debug reset
+        }
+
+        // Load saved data from localStorage
+        window.onload = function() {
+            localStorage.clear(); // Clear localStorage to prevent stale results
+            console.log('localStorage cleared on page load'); // Debug
+            const savedActor = localStorage.getItem("actor");
+            const savedPayload = localStorage.getItem("payload");
+            const savedResult = localStorage.getItem("result");
+            const savedResultClass = localStorage.getItem("resultClass");
+            console.log('Loaded from localStorage:', { savedActor, savedPayload, savedResult, savedResultClass }); // Debug
+            if (savedActor) {
+                document.getElementById("actor").value = savedActor;
+            }
+            if (savedPayload) {
+                document.getElementById("payload").value = savedPayload;
+            }
+            if (savedResult && savedResultClass) {
+                document.getElementById("result").innerText = savedResult;
+                document.getElementById("result").className = savedResultClass;
+            }
+        };
+    </script>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

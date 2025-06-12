@@ -1,7 +1,12 @@
 import express from "express";
 import path from "path";
-import {isETABreached, calculateEtaTime, isCancellable} from "ecom-ondc-order-sdk"
-import { refund } from "ecom-ondc-order-sdk"
+import {
+  isETABreached,
+  calculateEtaTime,
+  isCancellable,
+  shouldShowCancelButton,
+} from "ecom-ondc-order-sdk";
+import { refund } from "ecom-ondc-order-sdk";
 
 const app = express();
 const port = 3000;
@@ -38,18 +43,20 @@ app.get("/isCancellable", (req, res) => {
   }
 });
 
-app.post('/isCancellable', async (req, res) => {
+app.post("/isCancellable", async (req, res) => {
   try {
     const orderData = req.body;
     const result = isCancellable(orderData);
     res.status(200).json({
       cancellable: result,
-      message: result ? 'The order is cancellable' : 'The order is NOT cancellable',
+      message: result
+        ? "The order is cancellable"
+        : "The order is NOT cancellable",
     });
   } catch (error) {
-    console.error('Error checking cancellability:', error);
+    console.error("Error checking cancellability:", error);
     res.status(400).json({
-      error: 'Invalid JSON format or processing error',
+      error: "Invalid JSON format or processing error",
       details: error.message,
     });
   }
@@ -67,20 +74,47 @@ app.get("/eta-check", (req, res) => {
 });
 
 // Route to handle ETA breach form submission
-app.post('/check-eta', (req, res) => {
+app.post("/check-eta", (req, res) => {
   try {
     const data = req.body;
-    if (!data || typeof data !== 'object') {
-      return res.status(400).json({ error: 'Invalid JSON payload' });
+    if (!data || typeof data !== "object") {
+      return res.status(400).json({ error: "Invalid JSON payload" });
     }
     const result = isETABreached(data);
     res.json({
       success: true,
       breached: result,
-      message: result ? 'ETA Breached' : 'ETA Not Breached'
+      message: result ? "ETA Breached" : "ETA Not Breached",
     });
   } catch (error) {
-    res.status(500).json({ error: 'Server error', details: error.message });
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
+// route for cancel button
+app.get("/cancelButton", (req, res) => {
+  try {
+    console.log("Rendering cancelButton page...");
+    res.render("CancelButton", { result: undefined });
+  } catch (err) {
+    console.error("Error rendering cancelButton page:", err);
+    res.status(500).send("Internal Server Error ");
+  }
+});
+
+// Route to handle ETA breach form submission
+app.post("/cancelButton", (req, res) => {
+  try {
+    const { actor, payload } = req.body;
+    if (!actor || !payload) {
+  
+      return res.status(400).json({ error: "Actor and payload are required" });
+    }
+    const result = shouldShowCancelButton(actor, payload);
+    console.log("🚀 ~ app.post ~ result:", result)
+    res.json({ shouldShow: result });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -95,18 +129,18 @@ app.get("/calculate-Eta", (req, res) => {
 });
 
 // Route to handle ETA breach form submission
-app.post('/calculate-eta', (req, res) => {
+app.post("/calculate-eta", (req, res) => {
   try {
     const data = req.body;
-    console.log('body') // JSON payload from frontend
+    console.log("body"); // JSON payload from frontend
     const deliveryETA = calculateEtaTime(data); // Call the function from eta.js
     if (!deliveryETA) {
-      return res.status(400).json({ error: 'Invalid delivery data' });
+      return res.status(400).json({ error: "Invalid delivery data" });
     }
     res.json({ eta: deliveryETA.toISOString() }); // Return ETA as ISO string
   } catch (error) {
-    console.error('Error calculating ETA:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error calculating ETA:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
@@ -119,21 +153,40 @@ app.get("/refund", (req, res) => {
     res.render("refund", { refundResult: undefined, error: undefined });
     console.log("GET /refund: Refund page rendered successfully");
   } catch (err) {
-    console.error("GET /refund: Error rendering refund page:", err.message, err.stack);
+    console.error(
+      "GET /refund: Error rendering refund page:",
+      err.message,
+      err.stack
+    );
     res.status(500).send("Internal Server Error");
     console.log("GET /refund: Failed to render refund page");
   }
 });
 
 // POST route to process refund
-app.post('/refund', async (req, res) => {
+app.post("/refund", async (req, res) => {
   try {
-    const { actor, actionType, action, isETABreached, charge, on_cancelPayload, refundFL } = req.body;
-    console.log("🚀 ~ app.post ~ actor,", actor)
+    const {
+      actor,
+      actionType,
+      action,
+      isETABreached,
+      charge,
+      on_cancelPayload,
+      refundFL,
+    } = req.body;
+    console.log("🚀 ~ app.post ~ actor,", actor);
 
     // Validate required fields
-    if (!actor || !actionType || !action || !charge || !on_cancelPayload || !refundFL) {
-      return res.status(400).json({ error: 'All fields are required' });
+    if (
+      !actor ||
+      !actionType ||
+      !action ||
+      !charge ||
+      !on_cancelPayload ||
+      !refundFL
+    ) {
+      return res.status(400).json({ error: "All fields are required" });
     }
 
     // Parse JSON strings to objects
@@ -143,7 +196,9 @@ app.post('/refund', async (req, res) => {
       cancelPayloadObj = JSON.parse(on_cancelPayload);
       refundFLObj = JSON.parse(refundFL);
     } catch (error) {
-      return res.status(400).json({ error: 'Invalid JSON format in one or more payloads' });
+      return res
+        .status(400)
+        .json({ error: "Invalid JSON format in one or more payloads" });
     }
 
     // Call the refund function from ecom-ondc-order-sdk
@@ -154,14 +209,14 @@ app.post('/refund', async (req, res) => {
       isETABreached,
       chargeObj,
       cancelPayloadObj,
-      refundFLObj,
+      refundFLObj
     );
 
     // Send the result back to the frontend
     res.status(200).json(refundResult);
   } catch (error) {
-    console.error('Error processing refund:', error.message);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    console.error("Error processing refund:", error.message);
+    res.status(500).json({ error: error.message || "Internal server error" });
   }
 });
 
