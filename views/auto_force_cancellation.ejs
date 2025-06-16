@@ -272,7 +272,7 @@
 
         // Send data to backend
         try {
-          const response = await fetch("/cancelButton", {
+          const response = await fetch("/auto-force-cancel", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ actor, payload }),

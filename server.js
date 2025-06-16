@@ -4,7 +4,10 @@ import {
   isETABreached,
   calculateEtaTime,
   isCancellable,
-  shouldShowCancelButton,
+  cancellation,
+  getPromiseBuffers,
+  forceCancellation,
+  autoForceCancellation
 } from "ecom-ondc-order-sdk";
 import { refund } from "ecom-ondc-order-sdk";
 
@@ -24,10 +27,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_req, res) => {
   try {
-    console.log("Rendering ETA check page...");
+    console.log("Rendering Home check page...");
     res.render("home");
   } catch (err) {
-    console.error("Error rendering ETA check page:", err);
+    console.error("Error rendering Home check page:", err);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -109,7 +112,35 @@ app.post("/cancelButton", (req, res) => {
   
       return res.status(400).json({ error: "Actor and payload are required" });
     }
-    const result = shouldShowCancelButton(actor, payload);
+    const result = cancellation(actor, payload);
+    console.log("🚀 ~ app.post ~ result:", result)
+    res.json({ shouldShow: result });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Force cancellaition
+app.get("/force-cancellation", (req, res) => {
+  try {
+    console.log("Rendering force-cancellation page...");
+    res.render("force_Cancellation_", { result: undefined });
+  } catch (err) {
+    console.error("Error rendering force-cancellation page:", err);
+    res.status(500).send("Internal Server Error ");
+  }
+});
+
+// Route to handle force-cancellation form submission
+app.post("/force-cancellation", (req, res) => {
+  try {
+    const { actor, payload } = req.body;
+    if (!actor || !payload) {
+  
+      return res.status(400).json({ error: "Actor and payload are required" });
+    }
+    const result = forceCancellation(actor, payload);
     console.log("🚀 ~ app.post ~ result:", result)
     res.json({ shouldShow: result });
   } catch (error) {
@@ -221,6 +252,64 @@ app.post("/refund", async (req, res) => {
 });
 
 // ---------- Refund Route Ends Here ----------
+
+
+// ----------Promise Buffer routes starts Here ----------
+
+
+// app.get('/promise-buffer/cancel', async (req, res) => {
+//   try {
+//     // Call getPromiseBuffers function from the npm package
+//     const promiseBuffers = await getPromiseBuffers();
+
+//     // Render EJS template with response
+//     res.render('Cancel_Promise_Buffer', { buffers: promiseBuffers });
+//   } catch (error) {
+//     console.error('Error fetching promise buffers:', error.message);
+//     res.status(500).render('promiseBuffers', { buffers: [], error: 'Failed to fetch data from getPromiseBuffers' });
+//   }
+// });
+
+
+app.get('/promise-buffer/cancel', async (req, res) => {
+  try {
+    const type = req.query.type || 'cancellation';
+    const promiseBuffers = await getPromiseBuffers(type);
+    console.log("🚀 ~ app.get ~ type:", type);
+    console.log("🚀 ~ app.get ~ promiseBuffers:", promiseBuffers);
+    res.render('Cancel_Promise_Buffer', { data: promiseBuffers, error: null, selectedType: type });
+  } catch (error) {
+    console.error('Error fetching promise buffers:', error.message);
+    res.render('Cancel_Promise_Buffer', { data: [], error: 'Failed to fetch data from getPromiseBuffers', selectedType: req.query.type || 'cancellation' });
+  }
+});
+
+app.get("/auto-force-cancel", (req, res) => {
+  try {
+    console.log("Rendering /auto-force-cancel page...");
+    res.render("auto_force_cancellation", { result: undefined });
+  } catch (err) {
+    console.error("Error rendering cancelButton page:", err);
+    res.status(500).send("Internal Server Error ");
+  }
+});
+
+// Route to handle ETA breach form submission
+app.post("/auto-force-cancel", (req, res) => {
+  try {
+    const { actor, payload } = req.body;
+    if (!actor || !payload) {
+  
+      return res.status(400).json({ error: "Actor and payload are required" });
+    }
+    const result = autoForceCancellation(actor, payload);
+    console.log("🚀 ~ app.post ~ result:", result)
+    res.json({ shouldShow: result });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Start server
 app.listen(port, () => {
