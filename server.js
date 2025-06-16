@@ -135,13 +135,12 @@ app.get("/force-cancellation", (req, res) => {
 // Route to handle force-cancellation form submission
 app.post("/force-cancellation", (req, res) => {
   try {
-    const { actor, payload } = req.body;
-    if (!actor || !payload) {
-  
-      return res.status(400).json({ error: "Actor and payload are required" });
+    const { actor, payload, cancelTriggered, onCancelReceived, ttlExpired } = req.body;
+    if (!actor || !payload || cancelTriggered === undefined || onCancelReceived === undefined || ttlExpired === undefined) {
+      return res.status(400).json({ error: "Actor, payload, cancelTriggered, onCancelReceived, and ttlExpired are required" });
     }
-    const result = forceCancellation(actor, payload);
-    console.log("🚀 ~ app.post ~ result:", result)
+    const result = forceCancellation(actor, payload, cancelTriggered, onCancelReceived, ttlExpired);
+    console.log("🚀 ~ app.post ~ result:", result);
     res.json({ shouldShow: result });
   } catch (error) {
     console.error("Error:", error);
@@ -297,14 +296,19 @@ app.get("/auto-force-cancel", (req, res) => {
 // Route to handle ETA breach form submission
 app.post("/auto-force-cancel", (req, res) => {
   try {
-    const { actor, payload } = req.body;
-    if (!actor || !payload) {
-  
-      return res.status(400).json({ error: "Actor and payload are required" });
+    const { payload, cancelTriggered, onCancelReceived, ttlExpired } = req.body;
+
+    // Validate required inputs
+    if (!payload || cancelTriggered === undefined || onCancelReceived === undefined || ttlExpired === undefined) {
+      return res.status(400).json({ error: "Payload, cancelTriggered, onCancelReceived, and ttlExpired are required" });
     }
-    const result = autoForceCancellation(actor, payload);
-    console.log("🚀 ~ app.post ~ result:", result)
-    res.json({ shouldShow: result });
+
+    // Call autoForceCancellation with the correct parameters
+    const result = autoForceCancellation(payload, cancelTriggered, onCancelReceived, ttlExpired);
+    console.log("🚀 ~ app.post ~ result:", result);
+
+    // Send response matching frontend expectations
+    res.json(result);
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal server error" });

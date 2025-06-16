@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Check Cancellation Eligibility</title>
+    <title>Check Auto Force Cancellation</title>
     <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -108,6 +108,15 @@
         height: 40px;
       }
 
+      .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+        max-width: 800px;
+        width: 100%;
+      }
+
       button {
         margin-top: 20px;
         padding: 12px 24px;
@@ -208,35 +217,45 @@
             <li class="nav-item">
               <a class="nav-link" href="/cancelButton">Cancel Button Time</a>
             </li>
-             <li class="nav-item">
-            <a class="nav-link" href="/force-cancellation">Force Cancellation</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/auto-force-cancel"> Auto Force Cancellation</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="promiseBufferDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Promise Buffer
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="promiseBufferDropdown">
-              <li><a class="dropdown-item" href="/promise-buffer/cancel">Cancel</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="/force-cancellation">Force Cancellation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/auto-force-cancel">Auto Force Cancellation</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="promiseBufferDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Promise Buffer
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="promiseBufferDropdown">
+                <li><a class="dropdown-item" href="/promise-buffer/cancel">Cancel</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
 
-    <h1>Check Cancellation Eligibility</h1>
-    <p>Select actor and paste your JSON payload below:</p>
-    <select id="actor" name="actor" required>
-      <option value="" disabled selected>Select Actor</option>
-      <option value="buyer">Buyer</option>
-      <option value="agent">Agent</option>
-      <option value="opsLead">Ops Lead</option>
-    </select>
+    <h1>Check Auto Force Cancellation</h1>
+    <p>Paste your JSON payload and select options below:</p>
     <textarea
       id="payload"
-      placeholder='Enter JSON payload, e.g., {"domain":"ONDC:RET12","createdAt":"2025-06-12T10:00:00Z","fulfillments":[{"type":"Delivery","@ondc/org/TAT":"PT2H"}],"confirmedItems":[{"product":{"@ondc/org/cancellable":true},"@ondc/org/cancellable":true}]}'
+      placeholder='Enter JSON payload, e.g., {"domain":"ONDC:RET12","createdAt":"2025-06-12T10:00:00Z","fulfillments":[{"type":"Delivery","@ondc/org/TAT":"PT2H"}]}'
     ></textarea>
+    <div class="checkbox-group">
+      <label>
+        <input type="checkbox" id="cancelTriggered" />
+        Cancel Triggered
+      </label>
+      <label>
+        <input type="checkbox" id="onCancelReceived" />
+        On Cancel Received
+      </label>
+      <label>
+        <input type="checkbox" id="ttlExpired" />
+        TTL Expired
+      </label>
+    </div>
     <div>
       <button onclick="checkCancellation()">Check</button>
       <button onclick="resetForm()">Reset</button>
@@ -245,20 +264,13 @@
 
     <script>
       async function checkCancellation() {
-        const actor = document.getElementById("actor").value;
         const payloadInput = document.getElementById("payload").value;
+        const cancelTriggered = document.getElementById("cancelTriggered").checked;
+        const onCancelReceived = document.getElementById("onCancelReceived").checked;
+        const ttlExpired = document.getElementById("ttlExpired").checked;
         let payload;
 
-        // Validate inputs
-        if (!actor) {
-          const resultText = "❌ Please select an actor.";
-          document.getElementById("result").innerText = resultText;
-          document.getElementById("result").className = "failure";
-          localStorage.setItem("result", resultText);
-          localStorage.setItem("resultClass", "failure");
-          return;
-        }
-
+        // Validate JSON payload
         try {
           payload = JSON.parse(payloadInput);
         } catch (err) {
@@ -275,30 +287,31 @@
           const response = await fetch("/auto-force-cancel", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ actor, payload }),
+            body: JSON.stringify({ payload, cancelTriggered, onCancelReceived, ttlExpired }),
           });
 
           const result = await response.json();
           console.log("Backend response:", result); // Debug the response
 
           if (response.ok) {
-            const shouldShow =
-              result.shouldShow === "true" || result.shouldShow === true;
-            const resultText = shouldShow
-              ? `✅ Cancel button can be shown.`
-              : `❌ Cancel button cannot be shown.`;
-            const resultClass = shouldShow ? "success" : "failure";
-            console.log("Setting result:", {
-              resultText,
-              resultClass,
-              shouldShow,
-            }); // Debug DOM update
+            let resultText;
+            if (result.triggerCancel) {
+              resultText = `✅ Auto cancellation should be triggered.`;
+            } else if (result.triggerForceCancel) {
+              resultText = `✅ Force cancellation should be triggered.`;
+            } else {
+              resultText = `❌ No cancellation action required.`;
+            }
+            const resultClass = result.triggerCancel || result.triggerForceCancel ? "success" : "failure";
+            console.log("Setting result:", { resultText, resultClass }); // Debug DOM update
             document.getElementById("result").innerText = resultText;
             document.getElementById("result").className = resultClass;
             localStorage.setItem("result", resultText);
             localStorage.setItem("resultClass", resultClass);
-            localStorage.setItem("actor", actor);
             localStorage.setItem("payload", payloadInput);
+            localStorage.setItem("cancelTriggered", cancelTriggered);
+            localStorage.setItem("onCancelReceived", onCancelReceived);
+            localStorage.setItem("ttlExpired", ttlExpired);
           } else {
             const resultText = `❌ Error: ${result.error}`;
             console.log("Error response:", resultText); // Debug error
@@ -318,12 +331,16 @@
       }
 
       function resetForm() {
-        document.getElementById("actor").value = "";
         document.getElementById("payload").value = "";
+        document.getElementById("cancelTriggered").checked = false;
+        document.getElementById("onCancelReceived").checked = false;
+        document.getElementById("ttlExpired").checked = false;
         document.getElementById("result").innerText = "";
         document.getElementById("result").className = "";
-        localStorage.removeItem("actor");
         localStorage.removeItem("payload");
+        localStorage.removeItem("cancelTriggered");
+        localStorage.removeItem("onCancelReceived");
+        localStorage.removeItem("ttlExpired");
         localStorage.removeItem("result");
         localStorage.removeItem("resultClass");
         console.log("Form reset, localStorage cleared"); // Debug reset
@@ -333,31 +350,35 @@
       window.onload = function () {
         localStorage.clear(); // Clear localStorage to prevent stale results
         console.log("localStorage cleared on page load"); // Debug
-        const savedActor = localStorage.getItem("actor");
         const savedPayload = localStorage.getItem("payload");
+        const savedCancelTriggered = localStorage.getItem("cancelTriggered") === "true";
+        const savedOnCancelReceived = localStorage.getItem("onCancelReceived") === "true";
+        const savedTtlExpired = localStorage.getItem("ttlExpired") === "true";
         const savedResult = localStorage.getItem("result");
         const savedResultClass = localStorage.getItem("resultClass");
         console.log("Loaded from localStorage:", {
-          savedActor,
           savedPayload,
+          savedCancelTriggered,
+          savedOnCancelReceived,
+          savedTtlExpired,
           savedResult,
           savedResultClass,
         }); // Debug
-        if (savedActor) {
-          document.getElementById("actor").value = savedActor;
-        }
         if (savedPayload) {
           document.getElementById("payload").value = savedPayload;
         }
+        document.getElementById("cancelTriggered").checked = savedCancelTriggered;
+        document.getElementById("onCancelReceived").checked = savedOnCancelReceived;
+        document.getElementById("ttlExpired").checked = savedTtlExpired;
         if (savedResult && savedResultClass) {
           document.getElementById("result").innerText = savedResult;
-          document.getElementById("result").className = savedResultClass;
-        }
-      };
+        document.getElementById("result").className = savedResultClass;
+      }
+    };
     </script>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   </body>
 </html>
