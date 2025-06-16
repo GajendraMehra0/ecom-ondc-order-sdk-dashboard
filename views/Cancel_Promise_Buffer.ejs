@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise Buffer Display</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            padding-top: 100px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .dropdown {
+            margin-bottom: 25px;
+        }
+
+        select {
+            padding: 12px 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            background-color: #fff;
+        }
+
+        .result-box {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            min-height: 200px;
+        }
+
+        .result-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f9fafb;
+            border-left: 4px solid #007bff;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .result-item p {
+            margin: 5px 0;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .empty-message {
+            color: #888;
+            font-size: 16px;
+            font-style: italic;
+        }
+
+        .error-message {
+            color: #d32f2f;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0056b3 !important;
+            font-weight: 600;
+            font-size: 1.8rem;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 50px;
+            object-fit: contain;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 18px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-link {
+            color: #0056b3 !important;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff !important;
+            background-color: #007bff;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+
+            select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Your entire existing HTML stays exactly the same here -->
+
+    <nav class="custom-navbar navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://ondc.org/assets/ondc-buyer-apps/images/digihaat.png" class="brand-logo"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/isCancellable">Cancel Request</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/refund">Refund Request</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/eta-check">ETA-Breached</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/calculate-Eta">Calculate ETA Time</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/CancelButton">Cancel Button</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/force-cancellation">Force Cancellation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/auto-force-cancel">Auto Force Cancellation</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="promiseBufferDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Promise Buffer</a>
+                        <ul class="dropdown-menu" aria-labelledby="promiseBufferDropdown">
+                            <li><a class="dropdown-item" href="/promise-buffer/cancel">Cancel</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dropdown">
+            <form action="/promise-buffer/cancel" method="GET">
+                <select id="actionSelect" name="type" onchange="this.form.submit()">
+                    <option value="" <%= !selectedType ? 'selected' : '' %>>Select an action</option>
+                    <option value="cancellation" <%= selectedType === 'cancellation' ? 'selected' : '' %>>Cancellation</option>
+                    <option value="forceCancellation" <%= selectedType === 'forceCancellation' ? 'selected' : '' %>>Force Cancellation</option>
+                    <option value="autoForceCancellation" <%= selectedType === 'autoForceCancellation' ? 'selected' : '' %>>Auto Force Cancellation</option>
+                </select>
+            </form>
+        </div>
+        <div class="result-box" id="resultBox">
+            <% if (error) { %>
+                <p class="error-message"><%= error %></p>
+            <% } else if (data && data.length > 0) { %>
+                <% data.forEach(item => { %>
+                    <div class="result-item">
+                        <% for (let key in item) { %>
+                            <p><strong><%= key %>:</strong> <%= item[key] %></p>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else if (selectedType && !['cancellation', 'forceCancellation', 'autoForceCancellation'].includes(selectedType)) { %>
+                <p class="error-message">Please select a valid action</p>
+            <% } else { %>
+                <p class="empty-message">Please select an action to view data</p>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
