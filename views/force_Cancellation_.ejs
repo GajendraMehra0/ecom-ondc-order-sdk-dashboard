@@ -224,8 +224,6 @@
               <a class="nav-link" href="/auto-force-cancel">Auto Force Cancellation</a>
             </li>
             <li class="nav-item"><a class="nav-link" href="/promise-buffer/cancel">Promise Buffer Config</a></li>
-              </ul>
-            </li>
           </ul>
         </div>
       </div>
@@ -297,14 +295,16 @@
 
           if (response.ok) {
             let resultText, resultClass;
-            if (typeof result.shouldShow === "string" && result.shouldShow.includes("T")) {
+            if (typeof result.shouldShow === "string" && Date.parse(result.shouldShow)) {
               resultText = `✅ Cancel button can be shown at: ${new Date(result.shouldShow).toLocaleString()}`;
               resultClass = "success";
-            } else if (result.shouldShow === true) {
-              resultText = `✅ Cancel button can be shown.`;
-              resultClass = "success";
+            } else if (typeof result.shouldShow === "boolean") {
+              resultText = result.shouldShow
+                ? `✅ Cancel button can be shown.`
+                : `❌ Force Cancellation cannot be performed.`;
+              resultClass = result.shouldShow ? "success" : "failure";
             } else {
-              resultText = `❌ Force Cancellation cannot be performed`;
+              resultText = `Response: ${JSON.stringify(result.shouldShow)}`;
               resultClass = "failure";
             }
             console.log("Setting result:", { resultText, resultClass }); // Debug DOM update
