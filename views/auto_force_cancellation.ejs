@@ -292,9 +292,9 @@
             if (result.triggerCancel) {
               resultText = `✅ Auto cancellation should be triggered.`;
             } else if (result.triggerForceCancel) {
-              resultText = `✅ Force cancellation should be triggered.`;
+              resultText = `✅ Auto Force cancellation should be triggered.`;
             } else {
-              resultText = `❌ No cancellation action required.`;
+              resultText = `❌ Auto Force Cancellation cannot be performed`;
             }
             const resultClass = result.triggerCancel || result.triggerForceCancel ? "success" : "failure";
             console.log("Setting result:", { resultText, resultClass }); // Debug DOM update
