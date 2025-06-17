@@ -9,7 +9,6 @@
       rel="stylesheet"
     />
     <style>
-      /* [Previous styles remain unchanged] */
       /* Navbar */
       .custom-navbar {
         background-color: #ffffff;
@@ -35,11 +34,12 @@
         gap: 10px;
       }
 
-      .custom-navbar .navbar-brand img,
+      /* .custom-navbar .navbar-brand img,
       .brand-logo {
         height: 50px;
         object-fit: contain;
-      }
+
+      } */
 
       .navbar-nav,
       .custom-navbar .navbar-nav {
@@ -369,8 +369,7 @@
 
       /* Brand logo */
       .brand-logo {
-        height: 100%;
-        max-width: 100%;
+        height: 50px;
         object-fit: contain;
       }
 
@@ -439,13 +438,13 @@
             <li class="nav-item">
             <a class="nav-link" href="/CancelButton">Cancel Button</a>
           </li>
-           <li class="nav-item">
+            <li class="nav-item">
             <a class="nav-link" href="/force-cancellation">Force Cancellation</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/auto-force-cancel"> Auto Force Cancellation</a>
           </li>
-         <li class="nav-item"><a class="nav-link" href="/promise-buffer/cancel">Promise Buffer Config</a></li>
+          <li class="nav-item"><a class="nav-link" href="/promise-buffer/cancel">Promise Buffer Config</a></li>
           </ul>
         </div>
       </div>
@@ -672,7 +671,7 @@
         }
 
         if (savedRefundResult) {
-          document.getElementById('reefumdResult').textContent = JSON.stringify(
+          document.getElementById('refundResult').textContent = JSON.stringify(
             JSON.parse(savedRefundResult),
             null, 2
           );
