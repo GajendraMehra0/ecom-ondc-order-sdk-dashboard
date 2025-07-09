@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (_req, res) => {
   try {
-    console.log("Rendering Home check page...");
+    console.log("Rendering Home check page..");
     res.render("home");
   } catch (err) {
     console.error("Error rendering Home check page:", err);
