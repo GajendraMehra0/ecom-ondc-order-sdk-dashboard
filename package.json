@@ -12,6 +12,6 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
-    "ecom-ondc-order-sdk": "github:gajendrawits/ecom-ondc-util-sdk"
+    "ecom-ondc-order-sdk": "github:sakshamwits/dg-utility"
   }
 }
