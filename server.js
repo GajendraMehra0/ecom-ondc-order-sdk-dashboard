@@ -181,6 +181,7 @@ app.get("/refund", (req, res) => {
 
 app.post("/refund", async (req, res) => {
   try {
+    console.log("rendering refund page");
     const {
       actor,
       actionType,
