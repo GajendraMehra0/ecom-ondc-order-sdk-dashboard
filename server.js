@@ -226,6 +226,7 @@ app.post("/refund", async (req, res) => {
 // Promise Buffer View
 app.get("/promise-buffer/cancel", async (req, res) => {
   try {
+    console.log("rendering promise-buffer page");
     const type = req.query.type || "cancellation";
     const promiseBuffers = await getPromiseBuffers(type);
     res.render("Cancel_Promise_Buffer", {
