@@ -37,6 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 // Home Route
 app.get("/", (_req, res) => {
   try {
+     console.log("Rendering Home page");
     res.render("home");
   } catch (err) {
     console.error("Error rendering home:", err);
@@ -47,6 +48,7 @@ app.get("/", (_req, res) => {
 // Cancellable Route
 app.get("/isCancellable", (req, res) => {
   try {
+     console.log("rendering isCancellable page");
     res.render("isCancellable");
   } catch (err) {
     console.error("Error rendering isCancellable:", err);
@@ -56,6 +58,7 @@ app.get("/isCancellable", (req, res) => {
 
 app.post("/isCancellable", (req, res) => {
   try {
+    
     const orderData = req.body;
     const result = isCancellable(orderData);
     res.status(200).json({
@@ -75,6 +78,7 @@ app.post("/isCancellable", (req, res) => {
 // ETA Check Route
 app.get("/eta-check", (req, res) => {
   try {
+      console.log("rendering eta-check page");
     res.render("isETABreached", { result: undefined });
   } catch (err) {
     console.error("Error rendering isETABreached:", err);
@@ -99,6 +103,7 @@ app.post("/check-eta", (req, res) => {
 // Cancel Button Route
 app.get("/cancelButton", (req, res) => {
   try {
+          console.log("rendering cancelButton page");
     res.render("CancelButton", { result: undefined });
   } catch (err) {
     console.error("Error rendering CancelButton:", err);
@@ -122,6 +127,7 @@ app.post("/cancelButton", (req, res) => {
 // Force Cancellation Route
 app.get("/force-cancellation", (req, res) => {
   try {
+    console.log('rendering force-cancellation page')
     res.render("force_Cancellation_", { result: undefined });
   } catch (err) {
     console.error("Error rendering force_Cancellation_:", err);
@@ -131,6 +137,7 @@ app.get("/force-cancellation", (req, res) => {
 
 app.post("/force-cancellation", (req, res) => {
   try {
+    
     const { actor, payload, cancelTriggered, onCancelReceived, ttlExpired } =
       req.body;
     const result = forceCancellation(
@@ -149,6 +156,7 @@ app.post("/force-cancellation", (req, res) => {
 // ETA Calculation
 app.get("/calculate-Eta", (req, res) => {
   try {
+    console.log('rendering calculate-Eta page')
     res.render("calculate-Eta", { result: undefined });
   } catch (err) {
     console.error("Error rendering calculate-Eta:", err);
@@ -172,6 +180,7 @@ app.post("/calculate-eta", (req, res) => {
 // Refund Routes
 app.get("/refund", (req, res) => {
   try {
+    console.log('rendering refund page')
     res.render("refund", { refundResult: undefined, error: undefined });
   } catch (err) {
     console.error("Error rendering refund:", err);
@@ -247,6 +256,7 @@ app.get("/promise-buffer/cancel", async (req, res) => {
 // Auto Force Cancellation
 app.get("/auto-force-cancel", (req, res) => {
   try {
+    console.log('rendering auto-force-cancel page')
     res.render("auto_force_cancellation", { result: undefined });
   } catch (err) {
     console.error("Error rendering auto_force_cancellation:", err);
